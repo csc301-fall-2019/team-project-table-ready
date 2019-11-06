@@ -3,8 +3,6 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {Route, Switch, BrowserRouter} from "react-router-dom";
 import Navbar from "./Components/Navbar";
-import { Route, Switch, BrowserRouter } from "react-router-dom";
-import Navbar from "./Components/Navbar"
 import './App.scss';
 import SignIn from "./Components/SignIn&Up/signIn"
 import SignUp from "./Components/SignIn&Up/signup"
