@@ -14,4 +14,4 @@ class Admin extends Component {
 
 }
 
-export default RestaurantListItem;
+export default Admin;
