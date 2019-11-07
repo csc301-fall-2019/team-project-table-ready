@@ -1,10 +1,15 @@
 import React, {Component} from "react";
 import "../../Stylesheets/admin_page.scss";
 import Overview from './Overview';
+import Setting from './Setting';
+import Manage from './Manage';
 
 
 class Admin extends Component {
-  state = {};
+  state = {
+    // default view
+    page: 'overview'
+  };
 
   chooseOverview = () => {
     this.setState({page: 'overview'});
@@ -25,15 +30,16 @@ class Admin extends Component {
         <Overview/>
       );
     }
-    // else if (this.state.page === 'manage') {
-    //   return (
-    //     <Manage/>
-    //   );
-    // } else if (this.state.page === 'setting') {
-    //   return(
-    //     <Setting/>
-    //   );
-    // }
+    else if (this.state.page === 'manage') {
+      return (
+        <Manage/>
+      );
+    }
+    else if (this.state.page === 'setting') {
+      return (
+        <Setting/>
+      );
+    }
   };
 
   render() {
