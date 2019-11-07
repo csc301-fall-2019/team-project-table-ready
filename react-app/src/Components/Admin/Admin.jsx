@@ -1,24 +1,39 @@
 import React, {Component} from "react";
 import "../../Stylesheets/admin_page.scss";
+import Overview from './Overview';
 
 
 class Admin extends Component {
   state = {};
 
   chooseOverview = () => {
-
+    this.setState({page: 'overview'});
   };
 
   chooseManage = () => {
-
+    this.setState({page: 'manage'});
   };
 
   chooseSetting = () => {
-
+    this.setState({page: 'setting'});
   };
 
   showContent = () => {
-
+    console.log(this.state.page);
+    if (this.state.page === 'overview') {
+      return (
+        <Overview/>
+      );
+    }
+    // else if (this.state.page === 'manage') {
+    //   return (
+    //     <Manage/>
+    //   );
+    // } else if (this.state.page === 'setting') {
+    //   return(
+    //     <Setting/>
+    //   );
+    // }
   };
 
   render() {
@@ -49,7 +64,7 @@ class Admin extends Component {
             </div>
           </div>
         </div>
-        <div className="admin-content">{this.showContent}</div>
+        <div className="admin-content">{this.showContent()}</div>
       </div>
     );
   }

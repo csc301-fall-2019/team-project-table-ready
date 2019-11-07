@@ -6,7 +6,7 @@
       .button-group {
         margin-left: 23%;
 
-        .menu-button{
+        .menu-button {
           width: 15em;
           height: 4.5em;
         }
@@ -17,6 +17,16 @@
       .user-info {
         display: inline-block;
         vertical-align: top;
+      }
+    }
+  }
+
+  .admin-content {
+    .overview {
+      .chart {
+        width:400px;
+        height: 400px;
+        margin-left: 14%;
       }
     }
   }
