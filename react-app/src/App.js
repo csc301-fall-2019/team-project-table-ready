@@ -10,7 +10,6 @@ import RestaurateurPage2 from "./Components/Restaurateur/RestaurateurPage2";
 import Dashboard from "./Components/Restaurateur/Dashboard";
 import Admin from "./Components/Admin/Admin";
 import "./App.scss";
-import Customers from "./Components/Customers";
 import { withCookies, useCookies} from 'react-cookie';
 
 function App() {
@@ -46,6 +45,10 @@ function App() {
             exact path="/dashboard"
             render={() => (<Dashboard cookies={{cookies, setCookie, removeCookie}}/>)}
             />
+          <Route
+              exact path="/admin"
+              render={() => (<Admin cookies={{cookies, setCookie, removeCookie}}/>)}
+          />
         </Switch>
       </BrowserRouter>
     </div>
