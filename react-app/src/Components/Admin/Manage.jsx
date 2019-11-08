@@ -21,14 +21,14 @@ class Manage extends Component {
         this.setState({page: 'user'});
         const searchInput = document.getElementById("searchInput");
         searchInput.value = "";
-        // this.setActive(e);
+        this.setActive(e);
     };
 
     manageRestaurant = (e) => {
         this.setState({page: 'rest'});
         const searchInput = document.getElementById("searchInput");
         searchInput.value = "";
-        // this.setActive(e);
+        this.setActive(e);
     };
 
     showManaging = () => {
@@ -41,6 +41,14 @@ class Manage extends Component {
                 <Restaurants query={this.state.query}/>
             );
         }
+    };
+
+    setActive = (e) => {
+        for (let i = 0; i < e.target.parentNode.childNodes.length; i++) {
+            let btn = e.target.parentNode.childNodes[i];
+            btn.classList.remove("active");
+        }
+        e.target.classList.add("active");
     };
 
     search = () => {
@@ -70,9 +78,11 @@ class Manage extends Component {
                                 {this.showManaging()}
                             </div>
                         </div>
+
                         <div className='col-sm-4'>
                             <ul className="list-group list-all">
-                                <li className="list-group-item list-content" onClick={this.manageUsers}>Users</li>
+                                <li className="list-group-item list-content active"
+                                    onClick={this.manageUsers}>Users</li>
                                 <li className="list-group-item list-content"
                                     onClick={this.manageRestaurant}>Restaurants
                                 </li>

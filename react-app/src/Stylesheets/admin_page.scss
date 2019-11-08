@@ -51,6 +51,10 @@
     .manage {
       margin-left: 15%;
 
+      .active {
+        background-color: #6c757d;
+      }
+
       .card {
         display: flex;
         width: max-content;

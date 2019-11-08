@@ -56,7 +56,7 @@ app.post("/user/signup", (req, res) => {
 
 app.get('/api/users', (req, res) => {
     User.find({}, function (err, users) {
-        if (err){
+        if (err) {
             log(err);
             return err;
         }
@@ -67,7 +67,7 @@ app.get('/api/users', (req, res) => {
 
 app.get('/api/restaurants', (req, res) => {
     Restaurant.find({}, function (err, restaurants) {
-        if (err){
+        if (err) {
             log(err);
             return err;
         }
