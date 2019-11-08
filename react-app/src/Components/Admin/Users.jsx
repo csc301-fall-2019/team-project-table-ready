@@ -29,7 +29,15 @@ class Users extends Component {
     constructor(props) {
         super(props);
         this.deleteUser = this.deleteUser.bind(this);
-        this.state = {users: []};
+        this.state = {
+            users: [],
+            query: this.props.query
+        };
+
+    }
+
+    componentWillReceiveProps(nextProp) {
+        this.setState(nextProp);
     }
 
     componentDidMount() {
@@ -61,8 +69,15 @@ class Users extends Component {
 
 
     userList() {
-        log(this.state.users);
-        return this.state.users.map((user, index) =>
+        let res = this.state.users;
+
+        if (this.state.query !== "") {
+            res = res.filter((u) => {
+                return u.username.match(this.state.query);
+            });
+        }
+
+        return res.map((user, index) =>
             <UserRow key={index} user={user} delete={this.deleteUser}/>
         );
     }
