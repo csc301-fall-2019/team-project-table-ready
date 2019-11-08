@@ -1,15 +1,17 @@
 .admin-page {
+  margin-top: 5%;
+
   .menu-bar {
-    margin-top: 4%;
+    $secondary: white;
+    $danger: #e20f00;
+
+    @import "bootstrap";
 
     .menu {
-      .button-group {
-        margin-left: 23%;
+      margin-left: 15%;
 
-        .menu-button {
-          width: 15em;
-          height: 4.5em;
-        }
+      .btn-group {
+        width: 100%
       }
     }
 
@@ -23,10 +25,11 @@
 
   .admin-content {
     .overview {
-      .chart {
-        width: 400px;
-        height: 400px;
-        margin-left: 14%;
+      .card {
+        width: 70%;
+        height: 90%;
+        margin: 3%;
+        margin-top: 5%;
       }
     }
 
@@ -46,6 +49,21 @@
     }
 
     .manage {
+      margin-left: 15%;
+
+      .active {
+        background-color: #6c757d;
+      }
+
+      .card {
+        display: flex;
+        width: max-content;
+        height: max-content;
+        margin: 3%;
+        margin-top: 5%;
+        margin-bottom: 10%;
+      }
+
       .manage-container {
         margin-left: 15%;
         margin-top: 3%;
@@ -54,13 +72,6 @@
         .the-list {
           margin-top: 7%;
 
-          .list-all {
-            width: -webkit-fill-available;
-
-            .list-content {
-              width: -webkit-fill-available;
-            }
-          }
         }
       }
 
@@ -78,4 +89,6 @@
     height: 50px;
     border-radius: 50%;
   }
+
+
 }
