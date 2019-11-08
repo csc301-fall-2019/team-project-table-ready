@@ -5,35 +5,35 @@ import axios from 'axios';
 
 const log = console.log;
 
-function UserRow(props) {
-    const user = props.user;
+function RestRow(props) {
+    const rest = props.rest;
     const del = props.delete;
-    const userLink = `/users/${user._id}`;
+    const restLink = `/restaurants/${rest._id}`;
+    const ownerLink = `/users/${rest.owner}`;
 
     return (
-        <tr key={user._id.toString()}>
-            <th scope="row"><Link to={userLink}>{user.username}</Link></th>
-            <td><Link to={userLink}>{user.name}</Link></td>
-            {/*<td>{user.registered}</td>*/}
-            <td>{user.tel}</td>
-            <td>{user.accountType}</td>
+        <tr key={rest._id.toString()}>
+            <th scope="row"><Link to={restLink}>{rest.name}</Link></th>
+            <td><Link to={ownerLink}>{rest.owner}</Link></td>
+            {/*<td>{rest.registered}</td>*/}
+            {/*<td>{rest.owner}</td>*/}
+            <td>{rest.location}</td>
             <td><Button outline color="danger" size="sm" onClick={() => {
-                del(user._id);
+                del(rest._id);
             }}>Delete
             </Button></td>
         </tr>
     );
 }
 
-class Users extends Component {
+class Restaurants extends Component {
     constructor(props) {
         super(props);
-        this.deleteUser = this.deleteUser.bind(this);
+        this.deleteRest = this.deleteRest.bind(this);
         this.state = {
-            users: [],
+            rest: [],
             query: this.props.query
         };
-
     }
 
     componentWillReceiveProps(nextProp) {
@@ -41,11 +41,11 @@ class Users extends Component {
     }
 
     componentDidMount() {
-        axios.get('api/users')
+        axios.get('api/restaurants')
             .then(res => {
                 if (res.data.length > 0) {
                     this.setState({
-                        users: res.data,
+                        rest: res.data,
                     });
                 }
             })
@@ -55,11 +55,11 @@ class Users extends Component {
 
     }
 
-    deleteUser(id) {
-        axios.delete('api/users/' + id)
+    deleteRest(id) {
+        axios.delete('api/restaurants/' + id)
             .then(res => {
                 this.setState({
-                    users: this.state.users.filter(el => el._id !== id)
+                    rest: this.state.rest.filter(el => el._id !== id)
                 });
             })
             .catch(err => {
@@ -68,17 +68,17 @@ class Users extends Component {
     }
 
 
-    userList() {
-        let res = this.state.users;
+    restList() {
+        let res = this.state.rest;
 
         if (this.state.query !== "") {
-            res = res.filter((u) => {
-                return u.username.toLowerCase().match(this.state.query);
+            res = res.filter((r) => {
+                return r.name.toLowerCase().match(this.state.query);
             });
         }
 
-        return res.map((user, index) =>
-            <UserRow key={index} user={user} delete={this.deleteUser}/>
+        return res.map((rest, index) =>
+            <RestRow key={index} rest={rest} delete={this.deleteRest}/>
         );
     }
 
@@ -90,24 +90,23 @@ class Users extends Component {
                     <Col xl={6}>
                         <Card>
                             <CardHeader>
-                                <i className="fa fa-align-justify"></i> Users
+                                <i className="fa fa-align-justify"></i> Restaurants
                             </CardHeader>
                             <CardBody>
                                 <Table responsive hover>
                                     <thead>
                                     <tr>
-                                        <th scope="col">Username</th>
                                         <th scope="col">Name</th>
-                                        <th scope="col">Phone Number</th>
-                                        {/*TODO (xiaohegong) add name, date registered*/}
+                                        <th scope="col">Owner</th>
+                                        <th scope="col">Location</th>
                                         {/*<th scope="col">registered</th>*/}
-                                        <th scope="col">Role</th>
+                                        {/*<th scope="col">Role</th>*/}
                                         <th scope="col">Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {
-                                        this.userList()
+                                        this.restList()
                                     }
                                     </tbody>
                                 </Table>
@@ -120,4 +119,4 @@ class Users extends Component {
     }
 }
 
-export default Users;
+export default Restaurants;

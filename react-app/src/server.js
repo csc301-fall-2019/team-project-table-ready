@@ -9,6 +9,7 @@ const app = express();
 const {ObjectID} = require('mongodb');
 
 const User = require('./models/user.js');
+const Restaurant = require('./models/restaurant.js');
 
 /* Use statements for the server */
 app.use(express.static("public"));
@@ -55,7 +56,22 @@ app.post("/user/signup", (req, res) => {
 
 app.get('/api/users', (req, res) => {
     User.find({}, function (err, users) {
+        if (err){
+            log(err);
+            return err;
+        }
+
         res.send(users);
+    });
+});
+
+app.get('/api/restaurants', (req, res) => {
+    Restaurant.find({}, function (err, restaurants) {
+        if (err){
+            log(err);
+            return err;
+        }
+        res.send(restaurants);
     });
 });
 
@@ -64,6 +80,17 @@ app.delete('/api/users/:id', (req, res) => {
     User.findByIdAndDelete(id)
         .then(() => {
             res.json('User ' + id + ' deleted.');
+        })
+        .catch(err => {
+            res.status(400).json('Error: ' + err);
+        });
+});
+
+app.delete('/api/restaurants/:id', (req, res) => {
+    const id = req.params.id;
+    Restaurant.findByIdAndDelete(id)
+        .then(() => {
+            res.json('Restaurant ' + id + ' deleted.');
         })
         .catch(err => {
             res.status(400).json('Error: ' + err);

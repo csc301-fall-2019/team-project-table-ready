@@ -3,9 +3,10 @@ import "../../Stylesheets/admin_page.scss";
 import 'bootstrap/dist/css/bootstrap.css';
 
 import Users from "./Users.jsx";
-import Restaurants from "./Restaurants.js";
+import Restaurants from "./Restaurants.jsx";
 
 const log = console.log;
+
 
 class Manage extends Component {
     constructor(props) {
@@ -18,29 +19,34 @@ class Manage extends Component {
 
     manageUsers = (e) => {
         this.setState({page: 'user'});
+        const searchInput = document.getElementById("searchInput");
+        searchInput.value = "";
         // this.setActive(e);
     };
 
     manageRestaurant = (e) => {
         this.setState({page: 'rest'});
+        const searchInput = document.getElementById("searchInput");
+        searchInput.value = "";
         // this.setActive(e);
     };
 
     showManaging = () => {
-        log(this.state.page);
         if (this.state.page === 'user') {
             return (
                 <Users query={this.state.query}/>
             );
         } else if (this.state.page === 'rest') {
             return (
-                <Restaurants/>
+                <Restaurants query={this.state.query}/>
             );
         }
     };
 
     search = () => {
-        this.setState(() => ({query: document.getElementById("searchInput").value}));
+        let val = document.getElementById("searchInput").value;
+        val = val.trim().toLowerCase();
+        this.setState(() => ({query: val}));
     };
 
     render() {
@@ -52,8 +58,8 @@ class Manage extends Component {
                         <div className='col-sm-8 left-content'>
                             <div className="input-group mb-3">
                                 <input type="text" className="form-control" id="searchInput"
-                                       placeholder="Recipient's username"
-                                       aria-label="Recipient's username" aria-describedby="button-addon2"/>
+                                       placeholder="Search username..."
+                                       aria-label="username" aria-describedby="button-addon2"/>
                                 <div className="input-group-append">
                                     <button className="btn btn-outline-secondary" type="button"
                                             id="button-addon2" onClick={this.search}>Search
