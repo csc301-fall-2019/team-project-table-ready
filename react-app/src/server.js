@@ -53,10 +53,28 @@ app.post("/user/signup", (req, res) => {
         });
 });
 
+app.get('/api/users', (req, res) => {
+    User.find({}, function (err, users) {
+        res.send(users);
+    });
+});
+
+app.delete('/api/users/:id', (req, res) => {
+    const id = req.params.id;
+    User.findByIdAndDelete(id)
+        .then(() => {
+            res.json('User ' + id + ' deleted.');
+        })
+        .catch(err => {
+            res.status(400).json('Error: ' + err);
+        });
+});
+
+
 app.get("/user/info", (req, res) => {
     User.find()
-      .then(users => res.json(users))
-      .catch(error => res.status(400).json('Err '+ error))
+        .then(users => res.json(users))
+        .catch(error => res.status(400).json('Err ' + error));
 });
 
 

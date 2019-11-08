@@ -1,11 +1,15 @@
 import React, {Component} from "react";
 import "../../Stylesheets/admin_page.scss";
+import 'bootstrap/dist/css/bootstrap.css';
 
+import Users from "./Users.js"
+import User from "./User_temp";
 class Manage extends Component {
     state = {};
 
     render() {
         return (
+
             <div className='manage'>
                 <div className='manage-container'>
                     <div className='row manage-content'>
@@ -19,33 +23,8 @@ class Manage extends Component {
                                     </button>
                                 </div>
                             </div>
-                            <div className="input-group mb-3 the-list">
-                                <ul className="list-group list-all">
-                                    <div className="input-group-prepend">
-                                        <div className="input-group-text">
-                                            <input type="radio" aria-label="Radio button for following text input"/>
-                                        </div>
-                                        <li className="list-group-item list-content">Cras justo odio</li>
-                                    </div>
-                                    <div className="input-group-prepend">
-                                        <div className="input-group-text">
-                                            <input type="radio" aria-label="Radio button for following text input"/>
-                                        </div>
-                                        <li className="list-group-item active list-content">Cras justo odio</li>
-                                    </div>
-                                    <div className="input-group-prepend">
-                                        <div className="input-group-text">
-                                            <input type="radio" aria-label="Radio button for following text input"/>
-                                        </div>
-                                        <li className="list-group-item list-content">Cras justo odio</li>
-                                    </div>
-                                    <div className="input-group-prepend">
-                                        <div className="input-group-text">
-                                            <input type="radio" aria-label="Radio button for following text input"/>
-                                        </div>
-                                        <li className="list-group-item list-content">Cras justo odio</li>
-                                    </div>
-                                </ul>
+                            <div className="input-group ">
+                                <Users/>
                             </div>
                         </div>
                         <div className='col-sm-4'>
