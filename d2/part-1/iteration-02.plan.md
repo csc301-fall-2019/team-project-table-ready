@@ -82,10 +82,6 @@ We decided to follow conventions when coding and naming variables. While develop
 
 #### Goals and tasks
 
- * Describe your goals for this iteration and the tasks that you will have to complete in order to achieve these goals.
- * Order the items from most to least important.
- * Feel free (but not obligated) to specify some/all tasks as user stories.
-
 We aim to have a working prototype of the web portal in this iteration with only minor features left to be done. 
 * We will start with creating UI Mock-ups and implement the front-end interface accordingly. There are four main interfaces in our application:
     * Log in/Sign up 
@@ -104,10 +100,13 @@ We aim to have a working prototype of the web portal in this iteration with only
 * Then we will build API routes and database collections to store user, reservation and restaurant data. 
 * We will also connect each page with the database so that the frontend interacts with the backend effectively. 
 * Finally, when each page works with each other and the database, we will deploy the application to an AWS server. 
+* Some minor features will be skipped and delivered in the next iteration. 
+    * Subscription Payment
+    * Drag and Drop Table assignment
 
 #### Artifacts
 
-* We will have a To-Do lists including all of our current tasks. We will use trello to assign tasks for our project. We will update what we should do for each week and cross out the items we’ve already finished. 
+We will have a To-Do lists including all of our current tasks. We will use trello to assign tasks for our project. We will update what we should do for each week and cross out the items we’ve already finished. 
   - Phase 1 [Trello board](https://trello.com/b/mTQ6buKm/phase-1)
 
 We will plan our front-end design and make mock-ups. Then we will send the draft to our partner for suggestions. The mock-up will be followed when we implement the frontend.
