@@ -34,6 +34,24 @@ class Employees extends Component {
     this.setState({ employees: employees });
   };
 
+  deleteEmployee = id => {
+    const employees = this.state.employees;
+    for (let i = 0; i < employees.length; i++) {
+      if (employees[i].id === id) {
+        const all_employees = this.state.employees;
+        for (let j = 0; j < all_employees.length; j++) {
+          if (all_employees[j].id === employees[i].id) {
+            all_employees.splice(j, 1);
+            // server call to delete comment from database required here
+            break;
+          }
+        }
+        break;
+      }
+    }
+    this.setState({ employees: employees });
+  };
+
   componentDidMount() {
     this.getEmployee();
   }
@@ -52,6 +70,7 @@ class Employees extends Component {
                 name={employee.name}
                 id={employee.id}
                 telephone={employee.telephone}
+                deleteEmployee={this.deleteEmployee}
               />
             );
           })}
