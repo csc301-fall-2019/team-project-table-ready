@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 
 
 class RestaurateurPage extends Component {
-  state = {};
+  state = {restaurants:[]
+      };
 
   componentDidMount() {
       fetch('http://localhost:3000/restaurant/findRestaurantByOwner', {
@@ -15,7 +16,7 @@ class RestaurateurPage extends Component {
               'Content-Type': 'application/json',
           }
       }).then(res => res.json())
-          .then(customers => console.log('Customers fetched...', customers))
+          .then(restaurants => this.setState({restaurants}, () => console.log('Customers fetched...', this.state.restaurants)))
           .catch(err => {
               console.log(400);
           });
@@ -55,60 +56,18 @@ class RestaurateurPage extends Component {
               <Link to="/addNewRestaurant"><button className={"addNewButton"}> Add New </button></Link>
               <div className="restaurants-display">
                 <div className="list-group">
-                  <RestaurantListItem
-                    name="Restaurant Name"
-                    address="788 Creek Lane Simpsonville, SC 29680"
-                    telephone="123-456-7890"
-                    image={
-                      process.env.PUBLIC_URL +
-                      "/images/restaurant_images/restaurant1.jpeg"
-                    }
-                  />
-                  <RestaurantListItem
-                    name="Restaurant Name"
-                    address="788 Creek Lane Simpsonville, SC 29680"
-                    telephone="123-456-7890"
-                    image={
-                      process.env.PUBLIC_URL +
-                      "/images/restaurant_images/restaurant2.jpeg"
-                    }
-                  />
-                  <RestaurantListItem
-                    name="Restaurant Name"
-                    address="788 Creek Lane Simpsonville, SC 29680"
-                    telephone="123-456-7890"
-                    image={
-                      process.env.PUBLIC_URL +
-                      "/images/restaurant_images/restaurant3.jpeg"
-                    }
-                  />
-                  <RestaurantListItem
-                    name="Restaurant Name"
-                    address="788 Creek Lane Simpsonville, SC 29680"
-                    telephone="123-456-7890"
-                    image={
-                      process.env.PUBLIC_URL +
-                      "/images/restaurant_images/restaurant1.jpeg"
-                    }
-                  />
-                  <RestaurantListItem
-                    name="Restaurant Name"
-                    address="788 Creek Lane Simpsonville, SC 29680"
-                    telephone="123-456-7890"
-                    image={
-                      process.env.PUBLIC_URL +
-                      "/images/restaurant_images/restaurant2.jpeg"
-                    }
-                  />
-                  <RestaurantListItem
-                    name="Restaurant Name"
-                    address="788 Creek Lane Simpsonville, SC 29680"
-                    telephone="123-456-7890"
-                    image={
-                      process.env.PUBLIC_URL +
-                      "/images/restaurant_images/restaurant3.jpeg"
-                    }
-                  />
+                    {this.state.restaurants.map((restaurant) =>
+                        (<RestaurantListItem
+                            name= {restaurant.name}
+                            address={restaurant.location}
+                            telephone={restaurant.phoneNumber}
+                            image={
+                                process.env.PUBLIC_URL +
+                                "/images/restaurant_images/restaurant1.jpeg"
+                            }
+                        />)
+                    )}
+
                 </div>
               </div>
             </div>
