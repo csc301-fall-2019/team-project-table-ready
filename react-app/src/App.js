@@ -13,6 +13,7 @@ import "./App.scss";
 import { withCookies, useCookies } from "react-cookie";
 import Customers from "./Components/Customers";
 import NewRestaurant from "./Components/Restaurateur/NewRestaurant";
+import AddNewMenuItem from "./Components/Restaurateur/AddNewMenuItem";
 
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies(["cur_user"]);
@@ -76,6 +77,14 @@ function App() {
             render={() => (
               <Admin cookies={{ cookies, setCookie, removeCookie }} />
             )}
+          />
+
+          <Route
+              exact
+              path="/addNewMenuItem"
+              render={() => (
+                  <AddNewMenuItem cookies={{ cookies, setCookie, removeCookie }} />
+              )}
           />
 
           <Route exact path="/addNewRestaurant" component={NewRestaurant} />

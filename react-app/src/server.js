@@ -1,5 +1,6 @@
 /* server.js*/
 'use strict';
+
 const log = console.log;
 const express = require('express');
 const bodyParser = require('body-parser'); // middleware for parsing HTTP body
@@ -7,6 +8,7 @@ const app = express();
 const {ObjectID} = require('mongodb');
 const User = require('./models/user.js');
 const Restaurant = require('./models/Restaurant.js');
+const MenuItem = require('./models/MenuItem.js');
 
 /* Use statements for the server */
 app.use(express.static("public"));
@@ -66,6 +68,27 @@ app.post("/restaurant/newRestaurant", (req, res) => {
       log(err);
       res.send({code: 404, error});
     });
+  // return new Promise((resolve, reject) => {
+  //
+  // });
+});
+
+app.post("/restaurant/newMenuItem", (req, res) => {
+  const menuItem = new MenuItem({
+    name: req.body.name,
+    price: req.body.price.value,
+    ingredients: req.body.ingredients.value,
+    calories: req.body.calories.value,
+      restaurant:"WHAt"
+  });
+  menuItem.save()
+      .then(menuItem => {
+        res.send("menuItem " + menuItem.name + " saved to database");
+      })
+      .catch(err => {
+        log(err);
+        res.send({code: 404, error});
+      });
   // return new Promise((resolve, reject) => {
   //
   // });

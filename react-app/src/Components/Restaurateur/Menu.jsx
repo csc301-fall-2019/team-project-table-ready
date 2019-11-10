@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import MenuItem from "./MenuItem";
 import RestaurantListItem from "./RestaurantListItem";
+import {Link} from "react-router-dom";
 
 class Menu extends Component {
     state = {  };
@@ -28,7 +29,12 @@ class Menu extends Component {
     render() {
         return ( <><h2 style={{display:'inline'}}>Your Restaurants</h2>
             <button className={"addNewButton"}>Edit</button>
-            <button className={"addNewButton"}>Add New Item</button>
+            <Link to="/addNewMenuItem">
+                <button className="addNewButton btn btn-outline-success btn-sm">
+                    {" "}
+                    Add New Item{" "}
+                </button>
+            </Link>
         <table className={'menuTable'}>{this.addRow()}{this.addRow()}{this.addRow()}</table></>);
     }
 }
