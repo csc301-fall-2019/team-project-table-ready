@@ -6,6 +6,8 @@ import Employees from "./Employees";
 import Pay from "./Pay";
 import Menu from "./Menu";
 import DressCode from "./DressCode";
+import { rand_string } from "../../util";
+import uid from "uid";
 
 class RestaurateurPage2 extends Component {
   state = {
@@ -71,6 +73,7 @@ class RestaurateurPage2 extends Component {
               <div className="list-group options">
                 {this.state.functions.map(fun => (
                   <button
+                    key={uid(rand_string())}
                     type="button"
                     className="list-group-item list-group-item-action"
                     onClick={this.showComponent.bind(this, fun.model)}

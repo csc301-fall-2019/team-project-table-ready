@@ -3,23 +3,26 @@ import "../../Stylesheets/restaurateur_page.scss";
 import RestaurantListItem from "./RestaurantListItem";
 import { Link } from "react-router-dom";
 
-
 class RestaurateurPage extends Component {
-  state = {restaurants:[]
-      };
+  state = { restaurants: [] };
 
   componentDidMount() {
-      fetch('http://localhost:3000/restaurant/findRestaurantByOwner', {
-          method: 'POST',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-          }
-      }).then(res => res.json())
-          .then(restaurants => this.setState({restaurants}, () => console.log('Customers fetched...', this.state.restaurants)))
-          .catch(err => {
-              console.log(400);
-          });
+    fetch("http://localhost:3000/restaurant/findRestaurantByOwner", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(restaurants =>
+        this.setState({ restaurants }, () =>
+          console.log("Customers fetched...", this.state.restaurants)
+        )
+      )
+      .catch(err => {
+        console.log(400);
+      });
   }
 
   render() {
@@ -52,22 +55,26 @@ class RestaurateurPage extends Component {
             </div>
 
             <div className="col-md-9">
-              <h2 style={{display:'inline'}}>Your Restaurants</h2>
-              <Link to="/addNewRestaurant"><button className={"addNewButton"}> Add New </button></Link>
+              <h2 style={{ display: "inline" }}>Your Restaurants</h2>
+              <Link to="/addNewRestaurant">
+                <button className="addNewButton btn btn-outline-success btn-sm">
+                  {" "}
+                  Add New{" "}
+                </button>
+              </Link>
               <div className="restaurants-display">
                 <div className="list-group">
-                    {this.state.restaurants.map((restaurant) =>
-                        (<RestaurantListItem
-                            name= {restaurant.name}
-                            address={restaurant.location}
-                            telephone={restaurant.phoneNumber}
-                            image={
-                                process.env.PUBLIC_URL +
-                                "/images/restaurant_images/restaurant1.jpeg"
-                            }
-                        />)
-                    )}
-
+                  {this.state.restaurants.map(restaurant => (
+                    <RestaurantListItem
+                      name={restaurant.name}
+                      address={restaurant.location}
+                      telephone={restaurant.phoneNumber}
+                      image={
+                        process.env.PUBLIC_URL +
+                        "/images/restaurant_images/restaurant1.jpeg"
+                      }
+                    />
+                  ))}
                 </div>
               </div>
             </div>
