@@ -9,37 +9,35 @@ import DressCode from "./DressCode";
 
 class RestaurateurPage2 extends Component {
   state = {
-    curState :<Employees />,
-    functions:[
+    curState: <Employees />,
+    functions: [
       {
-        id:1,
-        title: 'Employees',
+        id: 1,
+        title: "Employees",
         model: <Employees />
       },
       {
-        id:2,
-        title: 'Dress Code',
+        id: 2,
+        title: "Dress Code",
         model: <DressCode />
       },
       {
-        id:3,
-        title: 'Menu',
+        id: 3,
+        title: "Menu",
         model: <Menu />
       },
       {
-        id:4,
-        title: 'Payment',
+        id: 4,
+        title: "Payment",
         model: <Pay />
       }
     ]
-
   };
-  showComponent = (component) =>{
-
+  showComponent = component => {
     this.setState({
-      curState : component
-    })
-  }
+      curState: component
+    });
+  };
 
   render() {
     return (
@@ -71,15 +69,19 @@ class RestaurateurPage2 extends Component {
               </ul>
               <h2>Options</h2>
               <div className="list-group options">
-                {this.state.functions.map((fun)=>(
-                    <button type="button" className="list-group-item list-group-item-action" onClick={this.showComponent.bind(this,fun.model)}>{fun.title}</button>
+                {this.state.functions.map(fun => (
+                  <button
+                    type="button"
+                    className="list-group-item list-group-item-action"
+                    onClick={this.showComponent.bind(this, fun.model)}
+                  >
+                    {fun.title}
+                  </button>
                 ))}
-
               </div>
             </div>
             <div className="col-md-8 content-display">
               {this.state.curState}
-
             </div>
           </div>
         </div>
