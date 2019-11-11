@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import EmployeeListItem from "./EmployeeListItem";
+import { withRouter } from "react-router-dom";
+// import EmployeeListItem from "./EmployeeListItem";
 import "../../Stylesheets/restaurateur_page_2.scss";
-import GeneralInfo from "./GeneralInfo";
+// import GeneralInfo from "./GeneralInfo";
 import Employees from "./Employees";
 import Pay from "./Pay";
 import Menu from "./Menu";
 import DressCode from "./DressCode";
-import { rand_string } from "../../util";
 import uid from "uid";
 import axios from "axios";
 const queryString = require('query-string');
@@ -48,9 +48,10 @@ class RestaurateurPage2 extends Component {
   };
 
   render() {
-    const values = queryString.parse(window)
-    console.log(values)
-    console.log(values.origin)
+    // console.log(this.props.location.state.restaurant_id);
+    const values = queryString.parse(window);
+    console.log(values);
+    console.log(values.origin);
     return (
       <div className="restaurateur-page-2">
         <div className="container">
@@ -82,7 +83,7 @@ class RestaurateurPage2 extends Component {
               <div className="list-group options">
                 {this.state.functions.map(fun => (
                   <button
-                    key={uid(rand_string())}
+                    key={uid()}
                     type="button"
                     className="list-group-item list-group-item-action"
                     onClick={this.showComponent.bind(this, fun.model)}
@@ -102,4 +103,4 @@ class RestaurateurPage2 extends Component {
   }
 }
 
-export default RestaurateurPage2;
+export default withRouter(RestaurateurPage2);
