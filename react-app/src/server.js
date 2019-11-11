@@ -106,6 +106,38 @@ app.post("/restaurant/findRestaurantByOwner", (req, res) => {
 
 });
 
+app.post("/waitlist/newWaitlist", (req, res) => {
+  const waitlist = new Waitlist({
+    id: req.body.id,
+    name: req.body.name,
+    people: req.body.people,
+    date_of_arrival: req.body.date_of_arrival,
+    estimated_time: req.body.estimated_time
+  });
+  waitlist.save()
+    .then(waitlist => {
+      res.send("waitlist" + waitlist.name + " saved to database");
+    })
+    .catch(err => {
+      log(err);
+      res.send({code: 404, error})
+    })
+})
+
+app.post("/waitlist/getWaitlist", (req, res) => {
+  Waitlist.find().then((waitlist) => {
+    res.send(waitlist);
+  }, (error) => {
+    res.send({code: 404, error});
+  });
+  // return new Promise((resolve, reject) => {
+  //
+  // });
+
+});
+
+
+
 app.get('/api/users', (req, res) => {
   User.find({}, function (err, users) {
     if (err) {
