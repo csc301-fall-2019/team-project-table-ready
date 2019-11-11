@@ -108,6 +108,18 @@ app.post("/restaurant/findRestaurantByOwner", (req, res) => {
 
 });
 
+app.post("/restaurant/findEmployeesByRestaurant", (req, res) => {
+    User.find({}).then((user) => {
+        res.send(user);
+    }, (error) => {
+        res.send({code: 404, error});
+    });
+    // return new Promise((resolve, reject) => {
+    //
+    // });
+
+});
+
 app.post("/waitlist/newWaitlist", (req, res) => {
   const waitlist = new Waitlist({
     id: req.body.id,

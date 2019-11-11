@@ -8,6 +8,7 @@ import Menu from "./Menu";
 import DressCode from "./DressCode";
 import { rand_string } from "../../util";
 import uid from "uid";
+import axios from "axios";
 const queryString = require('query-string');
 
 
@@ -37,6 +38,8 @@ class RestaurateurPage2 extends Component {
       }
     ]
   };
+
+
   showComponent = component => {
 
     this.setState({

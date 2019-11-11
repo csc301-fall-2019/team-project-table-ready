@@ -2,21 +2,40 @@ import React, { Component } from "react";
 import EmployeeListItem from "./EmployeeListItem";
 import { lorem, rand_string } from "../../util";
 import uid from "uid";
+import axios from "axios";
 
 class Employees extends Component {
-  state = {};
+  state = {employees: []};
   constructor(props) {
     super(props);
-    this.state = {
-      employees: [
-        {
-          image: "/images/avatar_sample.png",
-          name: lorem.generateWords(2),
-          id: rand_string(),
-          telephone: rand_string()
-        }
-      ]
+
+  }
+
+  componentDidMount() {
+
+    const header = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
     };
+    axios
+        .post(
+            "/restaurant/findEmployeesByRestaurant",
+
+            header
+
+        )
+
+
+        .then(employees =>
+            this.setState({ employees: employees.data}, () =>
+                console.log("Customers fetched...", employees)
+            )
+        )
+        .catch(err => {
+          console.log(400);
+        });
   }
 
   getEmployee = () => {
@@ -52,24 +71,20 @@ class Employees extends Component {
     this.setState({ employees: employees });
   };
 
-  componentDidMount() {
-    this.getEmployee();
-  }
 
   render() {
-    const employees = this.state.employees;
     return (
       <>
         <h2>Employees</h2>
         <div className="list-group employee-list">
-          {employees.map(employee => {
+          {this.state.employees.map(employee => {
             return (
               <EmployeeListItem
                 key={uid(rand_string())}
-                image={"/images/avatar_sample.png"}
-                name={employee.name}
+                image={employee.image}
+                name={employee.username}
                 id={employee.id}
-                telephone={employee.telephone}
+                telephone={employee.tel}
                 deleteEmployee={this.deleteEmployee}
               />
             );

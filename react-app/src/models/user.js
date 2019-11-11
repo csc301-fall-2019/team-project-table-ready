@@ -22,6 +22,15 @@ const UserSchema = new Schema({
     required: true,
     minlength: 4
   },
+  workFor: {
+    type: String,
+    required: false
+  },
+  image: {
+    type:String,
+    required: true,
+    default:"/images/avatar_sample.png"
+  },
   email: String,
   tel: String,
   manager: String
