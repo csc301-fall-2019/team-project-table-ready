@@ -6,7 +6,7 @@ class EmployeeListItem extends Component {
     return (
       <button
         type="button"
-        className="list-group-item list-group-item-action employee-list-item"
+        className="employee-list-item-component list-group-item list-group-item-action employee-list-item"
       >
         <div className="row">
           <div className="col col-md-4">

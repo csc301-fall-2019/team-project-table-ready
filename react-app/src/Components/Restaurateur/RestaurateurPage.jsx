@@ -3,12 +3,13 @@ import "../../Stylesheets/restaurateur_page.scss";
 import RestaurantListItem from "./RestaurantListItem";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { rand_string } from "../../util";
+import uid from "uid";
 
 class RestaurateurPage extends Component {
   state = { restaurants: [] };
 
   componentDidMount() {
-
     const header = {
       headers: {
         Accept: "application/json",
@@ -16,18 +17,16 @@ class RestaurateurPage extends Component {
       }
     };
     axios
-        .post(
-            "/restaurant/findRestaurantByOwner",
-            {
-              owner: this.props.cookies.cookies.cur_user._id
-            },
-            header
-
-        )
-
+      .post(
+        "/restaurant/findRestaurantByOwner",
+        {
+          owner: this.props.cookies.cookies.cur_user._id
+        },
+        header
+      )
 
       .then(restaurants =>
-        this.setState({ restaurants : restaurants.data }, () =>
+        this.setState({ restaurants: restaurants.data }, () =>
           console.log("Customers fetched...", this.state.restaurants)
         )
       )
@@ -53,13 +52,16 @@ class RestaurateurPage extends Component {
               </div>
               <ul className="list-group">
                 <li className="list-group-item">
-                  <strong>Email: </strong>{this.props.cookies.cookies.cur_user.username}
+                  <strong>Email: </strong>
+                  {this.props.cookies.cookies.cur_user.username}
                 </li>
                 <li className="list-group-item">
-                  <strong>Telephone: </strong>{this.props.cookies.cookies.cur_user.tel}
+                  <strong>Telephone: </strong>
+                  {this.props.cookies.cookies.cur_user.tel}
                 </li>
                 <li className="list-group-item">
-                  <strong>Email: </strong>{this.props.cookies.cookies.cur_user.email}
+                  <strong>Email: </strong>
+                  {this.props.cookies.cookies.cur_user.email}
                 </li>
               </ul>
             </div>
@@ -75,16 +77,26 @@ class RestaurateurPage extends Component {
               <div className="restaurants-display">
                 <div className="list-group">
                   {this.state.restaurants.map(restaurant => (
-                    <RestaurantListItem
-                      name={restaurant.name}
-                      address={restaurant.location}
-                      telephone={restaurant.phoneNumber}
-                      image={
-                        process.env.PUBLIC_URL +
-                        "/images/restaurant_images/restaurant1.jpeg"
-                      }
-                      _id = {restaurant._id}
-                    />
+                    <Link
+                      key={restaurant._id}
+                      to={{
+                        pathname: "/restaurateur2",
+                        state: {
+                          restaurant_id: restaurant._id
+                        }
+                      }}
+                    >
+                      <RestaurantListItem
+                        name={restaurant.name}
+                        address={restaurant.location}
+                        telephone={restaurant.phoneNumber}
+                        image={
+                          process.env.PUBLIC_URL +
+                          "/images/restaurant_images/restaurant1.jpeg"
+                        }
+                        _id={restaurant._id}
+                      />
+                    </Link>
                   ))}
                 </div>
               </div>

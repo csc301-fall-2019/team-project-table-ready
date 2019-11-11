@@ -65,7 +65,7 @@ class Employees extends Component {
           {employees.map(employee => {
             return (
               <EmployeeListItem
-                key={uid(rand_string())}
+                key={uid()}
                 image={"/images/avatar_sample.png"}
                 name={employee.name}
                 id={employee.id}
