@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import axios from "axios";
 import "../../Stylesheets/restaurateur_page.scss";
+import { Redirect } from 'react-router-dom'
 
 class NewRestaurant extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  state = {};
+  state = {redirect: false};
   handleSubmit(event) {
     event.preventDefault();
 
@@ -22,7 +23,7 @@ class NewRestaurant extends Component {
       .post(
         "/restaurant/newRestaurant",
         {
-          owner: "Heddy",
+          owner: this.props.cookies.cookies.cur_user._id,
           name: event.target.name.value,
           phoneNumber: event.target.phoneNumber.value,
           cuisine: event.target.cuisine.value,
@@ -32,6 +33,7 @@ class NewRestaurant extends Component {
       )
       .then(
         response => {
+          this.setState({ redirect: true });
           console.log(response);
         },
         error => {
@@ -60,6 +62,11 @@ class NewRestaurant extends Component {
     //     });
   }
   render() {
+    const { redirect } = this.state;
+
+    if (redirect) {
+      return <Redirect to='/'/>;
+    }
     return (
       <div className="new-restaurant-page">
         <div className="container">

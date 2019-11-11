@@ -79,7 +79,7 @@ app.post("/restaurant/newMenuItem", (req, res) => {
     price: req.body.price.value,
     ingredients: req.body.ingredients.value,
     calories: req.body.calories.value,
-      restaurant:"WHAt"
+    restaurant:"WHAt"
   });
   menuItem.save()
       .then(menuItem => {
@@ -95,9 +95,11 @@ app.post("/restaurant/newMenuItem", (req, res) => {
 });
 
 app.post("/restaurant/findRestaurantByOwner", (req, res) => {
-  Restaurant.find({owner: "Heddy"}).then((restaurant) => {
+  Restaurant.find({owner: req.body.owner}).then((restaurant) => {
+    console.log(restaurant);
     res.send(restaurant);
   }, (error) => {
+    console.log("why",req.body.owner)
     res.send({code: 404, error});
   });
   // return new Promise((resolve, reject) => {

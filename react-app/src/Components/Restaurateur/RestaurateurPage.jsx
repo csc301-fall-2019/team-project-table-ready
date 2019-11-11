@@ -2,21 +2,32 @@ import React, { Component } from "react";
 import "../../Stylesheets/restaurateur_page.scss";
 import RestaurantListItem from "./RestaurantListItem";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 class RestaurateurPage extends Component {
   state = { restaurants: [] };
 
   componentDidMount() {
-    fetch("http://localhost:3000/restaurant/findRestaurantByOwner", {
-      method: "POST",
+
+    const header = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
       }
-    })
-      .then(res => res.json())
+    };
+    axios
+        .post(
+            "/restaurant/findRestaurantByOwner",
+            {
+              owner: this.props.cookies.cookies.cur_user._id
+            },
+            header
+
+        )
+
+
       .then(restaurants =>
-        this.setState({ restaurants }, () =>
+        this.setState({ restaurants : restaurants.data }, () =>
           console.log("Customers fetched...", this.state.restaurants)
         )
       )
@@ -26,7 +37,7 @@ class RestaurateurPage extends Component {
   }
 
   render() {
-    console.log(this.props.cookies.cookies);
+    console.log(this.props.cookies.cookies.cur_user);
     return (
       <div className="restaurateur-page">
         <div className="container">
@@ -42,14 +53,13 @@ class RestaurateurPage extends Component {
               </div>
               <ul className="list-group">
                 <li className="list-group-item">
-                  <strong>Email: </strong>name@email.com
+                  <strong>Email: </strong>{this.props.cookies.cookies.cur_user.username}
                 </li>
                 <li className="list-group-item">
-                  <strong>Telephone: </strong>123-456-7890
+                  <strong>Telephone: </strong>{this.props.cookies.cookies.cur_user.tel}
                 </li>
                 <li className="list-group-item">
-                  <strong>Address: </strong>788 Creek Lane Simpsonville, SC
-                  29680
+                  <strong>Email: </strong>{this.props.cookies.cookies.cur_user.email}
                 </li>
               </ul>
             </div>
@@ -73,6 +83,7 @@ class RestaurateurPage extends Component {
                         process.env.PUBLIC_URL +
                         "/images/restaurant_images/restaurant1.jpeg"
                       }
+                      _id = {restaurant._id}
                     />
                   ))}
                 </div>

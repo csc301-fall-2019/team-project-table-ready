@@ -57,7 +57,7 @@ function App() {
           />
           <Route
             exact
-            path="/restaurateur2"
+            path="/restaurateur2/:id"
             render={() => (
               <RestaurateurPage2
                 cookies={{ cookies, setCookie, removeCookie }}
@@ -90,8 +90,15 @@ function App() {
                   <AddNewMenuItem cookies={{ cookies, setCookie, removeCookie }} />
               )}
           />
+          <Route
+              exact
+              path="/addNewRestaurant"
+              render={() => (
+                  <NewRestaurant cookies={{ cookies, setCookie, removeCookie }} />
+              )}
+          />
 
-          <Route exact path="/addNewRestaurant" component={NewRestaurant} />
+
         </Switch>
       </BrowserRouter>
     </div>

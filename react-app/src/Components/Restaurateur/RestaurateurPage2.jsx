@@ -8,6 +8,8 @@ import Menu from "./Menu";
 import DressCode from "./DressCode";
 import { rand_string } from "../../util";
 import uid from "uid";
+const queryString = require('query-string');
+
 
 class RestaurateurPage2 extends Component {
   state = {
@@ -36,12 +38,16 @@ class RestaurateurPage2 extends Component {
     ]
   };
   showComponent = component => {
+
     this.setState({
       curState: component
     });
   };
 
   render() {
+    const values = queryString.parse(window)
+    console.log(values)
+    console.log(values.origin)
     return (
       <div className="restaurateur-page-2">
         <div className="container">
