@@ -120,6 +120,18 @@ app.post("/restaurant/findEmployeesByRestaurant", (req, res) => {
 
 });
 
+app.post("/restaurant/findRestaurant", (req, res) => {
+    Restaurant.find({_id:req.body._id}).then((user) => {
+        res.send(user);
+    }, (error) => {
+        res.send({code: 404, error});
+    });
+    // return new Promise((resolve, reject) => {
+    //
+    // });
+
+});
+
 app.post("/waitlist/newWaitlist", (req, res) => {
   const waitlist = new Waitlist({
     id: req.body.id,
