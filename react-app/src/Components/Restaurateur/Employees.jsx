@@ -61,6 +61,20 @@ class Employees extends Component {
     return (
       <>
         <h2>Employees</h2>
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Employee id"
+            aria-label="Employee id"
+            aria-describedby="basic-addon2"
+          />
+          <div class="input-group-append">
+            <button class="btn btn-success" id="basic-addon2" onClick={}>
+              Add Employee
+            </button>
+          </div>
+        </div>
         <div className="list-group employee-list">
           {employees.map(employee => {
             return (

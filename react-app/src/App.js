@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
-import Navbar from "./Components/Navbar";
+// import Navbar from "./Components/Navbar";
 import "./App.scss";
 import SignIn from "./Components/SignIn&Up/signIn";
 import SignUp from "./Components/SignIn&Up/signup";
@@ -12,7 +12,7 @@ import Admin from "./Components/Admin/Admin";
 import Employee from "./Components/Employee/employee";
 import "./App.scss";
 import { withCookies, useCookies } from "react-cookie";
-import Customers from "./Components/Customers";
+// import Customers from "./Components/Customers";
 import NewRestaurant from "./Components/Restaurateur/NewRestaurant";
 import AddNewMenuItem from "./Components/Restaurateur/AddNewMenuItem";
 
