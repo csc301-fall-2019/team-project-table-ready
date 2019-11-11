@@ -56,6 +56,8 @@ class Employees extends Component {
     this.getEmployee();
   }
 
+  addEmployee = () => {};
+
   render() {
     const employees = this.state.employees;
     return (
@@ -70,7 +72,11 @@ class Employees extends Component {
             aria-describedby="basic-addon2"
           />
           <div class="input-group-append">
-            <button class="btn btn-success" id="basic-addon2" onClick={}>
+            <button
+              class="btn btn-success"
+              id="basic-addon2"
+              onClick={this.addEmployee}
+            >
               Add Employee
             </button>
           </div>
