@@ -17,12 +17,12 @@ const queryString = require("query-string");
 class RestaurateurPage2 extends Component {
     state = {
         info: [],
-        curState: <Employees id={this.props.match.params.id}/>,
+        curState: <Employees res_id={this.props.match.params.id}/>,
         functions: [
             {
                 id: 1,
                 title: "Employees",
-                model: <Employees id={this.props.match.params.id}/>
+                model: <Employees res_id={this.props.match.params.id}/>
             },
             {
                 id: 2,
