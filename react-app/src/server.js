@@ -129,8 +129,22 @@ app.post("/restaurant/findEmployeesByRestaurant", (req, res) => {
 
 app.post("/restaurant/add_employee", (req, res) => {
   // res.send("1000");
-  const name = req.params.name;
-  res.json(name);
+  const username = req.body.username;
+  const restaurant_id = req.body.restaurant_id;
+  console.log("username:", username);
+  User.findOne({ username: username }, function(err, user) {
+    if (err) {
+      log(err);
+      return err;
+    }
+    console.log(user.workFor);
+    console.log(restaurant_id);
+    if (!user.workFor.includes(restaurant_id)) {
+      user.workFor.push(restaurant_id);
+    }
+    user.save();
+    res.send(user);
+  });
 });
 
 app.post("/restaurant/findRestaurant", (req, res) => {

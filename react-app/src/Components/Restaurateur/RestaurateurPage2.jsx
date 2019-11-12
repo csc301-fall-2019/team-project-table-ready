@@ -15,12 +15,12 @@ const queryString = require("query-string");
 class RestaurateurPage2 extends Component {
   state = {
     info: [],
-    curState: <Employees />,
+    curState: <Employees res_id={this.props.match.params.id} />,
     functions: [
       {
         id: 1,
         title: "Employees",
-        model: <Employees />
+        model: <Employees res_id={this.props.match.params.id} />
       },
       {
         id: 2,
@@ -47,14 +47,13 @@ class RestaurateurPage2 extends Component {
       }
     };
     axios
-        .post(
-            "/restaurant/findRestaurant",
-            {
-                _id: this.props.match.params.id
-            },
-            header
-        )
-
+      .post(
+        "/restaurant/findRestaurant",
+        {
+          _id: this.props.match.params.id
+        },
+        header
+      )
       .then(restaurant =>
         this.setState({ info: restaurant.data[0] }, () =>
           console.log("Customers fetched...", this.state.info)

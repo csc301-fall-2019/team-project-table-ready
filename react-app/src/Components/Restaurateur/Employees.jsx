@@ -67,12 +67,29 @@ class Employees extends Component {
     const employee_username = document.getElementById("add-employee-input")
       .value;
     console.log(`employee to be added: ${employee_username}`);
+    axios
+      .post("/restaurant/add_employee", {
+        restaurant_id: this.props.res_id,
+        username: employee_username
+      })
+      .then(function(response) {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   };
 
   render() {
+    if (this.props.match) {
+      console.log(this.props.match.params.id);
+    } else {
+      console.log("not found");
+    }
     return (
       <>
         <h2>Employees</h2>
+        {/* <h2>{this.props.res_id}</h2> */}
         <div className="input-group mb-3">
           <input
             type="text"
