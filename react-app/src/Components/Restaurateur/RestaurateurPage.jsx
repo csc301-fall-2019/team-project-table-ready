@@ -43,7 +43,7 @@ class RestaurateurPage extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-3 info">
-                <h2 className="">Your Name</h2>
+                <h2 className="">this.props.cookies.cookies.cur_user.username</h2>
                 <div>
                   <img
                     src={process.env.PUBLIC_URL + "/images/avatar_sample.png"}
@@ -52,10 +52,7 @@ class RestaurateurPage extends Component {
                   />
                 </div>
                 <ul className="list-group">
-                  <li className="list-group-item">
-                    <strong>Email: </strong>
-                    {this.props.cookies.cookies.cur_user.username}
-                  </li>
+                  
                   <li className="list-group-item">
                     <strong>Telephone: </strong>
                     {this.props.cookies.cookies.cur_user.tel}

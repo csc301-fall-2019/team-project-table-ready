@@ -58,9 +58,9 @@ app.post("/restaurant/newRestaurant", (req, res) => {
     phoneNumber: req.body.phoneNumber,
     location: req.body.location,
     cuisine: req.body.cuisine,
+    operationHour: req.body.hours,
     owner: req.body.owner
   });
-  console.log(restaurant);
   restaurant
     .save()
     .then(restaurant => {
@@ -68,11 +68,29 @@ app.post("/restaurant/newRestaurant", (req, res) => {
     })
     .catch(err => {
       log(err);
-      res.send({ code: 404, error });
+      res.send({ code: 404, err });
     });
-  // return new Promise((resolve, reject) => {
-  //
-  // });
+
+});
+
+app.post("/restaurant/updateRestaurant", (req, res) => {
+  Restaurant.
+  findByIdAndUpdate( req.body._id, {
+
+    name: req.body.name,
+    phoneNumber: req.body.phoneNumber,
+    location: req.body.location,
+    Cuisine: req.body.cuisine,
+    operationHour: req.body.hours
+
+  })
+      .then(restaurant => {
+        res.send("restaurant " + restaurant.name + " updated to database");
+      })
+      .catch(err => {
+        log(err);
+        res.send({ code: 404, err });
+      });
 });
 
 app.post("/restaurant/newMenuItem", (req, res) => {

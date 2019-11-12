@@ -46,6 +46,10 @@ const RestaurantSchema = new Schema({
         type:String,
         required:true,
         default:"you do not have a dress code yet"
+    },
+    operationHour:{
+        type:String,
+        required:false
     }
 });
 

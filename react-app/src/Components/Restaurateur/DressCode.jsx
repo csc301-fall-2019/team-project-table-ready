@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
 import axios from "axios";
 import "../../Stylesheets/restaurateur_page_2.scss";
 
@@ -32,7 +31,6 @@ class DressCode extends Component {
             });
     }
     editCode = () => {
-        const block = document.getElementById("codeBlock");
         this.setState({codeBlock:<><textarea id = "codeBlock" row ='5'>{this.state.info.dressCode}</textarea>
                 <button className="addNewButton btn btn-outline-success btn-sm" onClick={this.submit}>Done</button></>})
     };

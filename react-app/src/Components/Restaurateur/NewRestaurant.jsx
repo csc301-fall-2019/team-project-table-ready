@@ -27,7 +27,8 @@ class NewRestaurant extends Component {
           name: event.target.name.value,
           phoneNumber: event.target.phoneNumber.value,
           cuisine: event.target.cuisine.value,
-          location: event.target.location.value
+          location: event.target.location.value,
+          hours: event.target.hours.value
         },
         header
       )
@@ -127,6 +128,20 @@ class NewRestaurant extends Component {
                   placeholder="Restaurant Cuisine"
                   id="cuisine"
                   name="cuisine"
+                />
+              </div>
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="basic-addon1">
+                    Operation Hours
+                  </span>
+                </div>
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Operation Hours"
+                    id="hours"
+                    name="hours"
                 />
               </div>
 
