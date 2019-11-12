@@ -90,7 +90,7 @@ app.post("/restaurant/newMenuItem", (req, res) => {
     })
     .catch(err => {
       log(err);
-      res.send({ code: 404, error });
+      res.send({ code: 404, err });
     });
   // return new Promise((resolve, reject) => {
   //
@@ -104,7 +104,6 @@ app.post("/restaurant/findRestaurantByOwner", (req, res) => {
       res.send(restaurant);
     },
     error => {
-      console.log("why", req.body.owner);
       res.send({ code: 404, error });
     }
   );
@@ -122,10 +121,27 @@ app.post("/restaurant/findEmployeesByRestaurant", (req, res) => {
       res.send({ code: 404, error });
     }
   );
+
+
   // return new Promise((resolve, reject) => {
   //
   // });
 });
+
+  app.post("/restaurant/updateDressCode", (req, res) => {
+  Restaurant.findByIdAndUpdate( req.body._id, {
+
+    DressCode: req.body.dressCode
+
+  }).then(
+      user => {
+        res.send(user);
+      },
+      error => {
+        res.send({code: 404, error});
+      }
+  );
+})
 
 app.post("/restaurant/add_employee", (req, res) => {
   // res.send("1000");

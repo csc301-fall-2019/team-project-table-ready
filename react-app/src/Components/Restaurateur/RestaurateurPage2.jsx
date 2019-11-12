@@ -20,12 +20,12 @@ class RestaurateurPage2 extends Component {
       {
         id: 1,
         title: "Employees",
-        model: <Employees />
+        model: <Employees id={this.props.match.params.id}/>
       },
       {
         id: 2,
         title: "Dress Code",
-        model: <DressCode />
+        model: <DressCode id={this.props.match.params.id}/>
       },
       {
         id: 3,
