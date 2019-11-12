@@ -75,7 +75,7 @@ Each task will have its own priority, and we will be focusing on the one will hi
 
 We've divided our web application into 4 main interfaces and divided our team into sub-groups that will be responsible for the assigned page. This way, we will not need to know every tiny implementation detail our teammate implemented and makes debugging more efficient. Each sub-group will git checkout a separate development branch while they are working on the assigned page. When some substantial progress is made (e.g.,  front-end of the page is finished), the sub-team will submit a pull request from dev/feature branch to master branch and ask the team to review. When at least one person reviews and approves the code, the author can merge the changes into master. This way, we will foster good code, a clean working tree and maintain a record of important milestones/progess. 
 
-We decided to follow conventions when coding and naming variables. While developing, we will deploy and test the our application on nodejs server. When we are ready to deploy, we will use AWS server and deploy the web application there. We choose to use AWS server because we really only need a server with domain names and AWS provides high quality, free service. 
+We decided to follow conventions when coding and naming variables. While developing, we will deploy and test our application on local nodeJS server. We will also write automated tests after we are done with the main functionalities. When we are ready to deploy, we will use Heroku to deploy the web application online. We choose to use Heroku because we really only need a server with domain names and Heroku provides high quality, free service. 
 
 
 ## Product
@@ -97,7 +97,7 @@ We aim to have a working prototype of the web portal in this iteration with only
         * Displays user subscription trends/stats
         * Manage all restaurant and users
         * Settings: update user information
-* Then we will build API routes and database collections to store user, reservation and restaurant data. 
+* Then we will build API routes and database collections to store users, reservations and restaurant data. 
 * We will also connect each page with the database so that the frontend interacts with the backend effectively. 
 * Finally, when each page works with each other and the database, we will deploy the application to an AWS server. 
 * Some minor features will be skipped and delivered in the next iteration. 
