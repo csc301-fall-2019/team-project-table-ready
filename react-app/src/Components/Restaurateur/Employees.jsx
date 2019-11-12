@@ -8,9 +8,16 @@ class Employees extends Component {
   state = { employees: [] };
   constructor(props) {
     super(props);
+    this.addEmployee = this.addEmployee.bind(this);
+    this.fetchEmployee = this.fetchEmployee.bind(this);
+    // this.test1 = this.test1.bind(this);
   }
 
   componentDidMount() {
+    this.fetchEmployee();
+  }
+
+  fetchEmployee = () => {
     const header = {
       headers: {
         Accept: "application/json",
@@ -18,7 +25,13 @@ class Employees extends Component {
       }
     };
     axios
-      .post("/restaurant/findEmployeesByRestaurant", header)
+      .post(
+        "/restaurant/findEmployeesByRestaurant",
+        {
+          restaurant_id: this.props.res_id
+        },
+        header
+      )
       .then(employees =>
         this.setState({ employees: employees.data }, () =>
           console.log("Customers fetched...", employees)
@@ -27,21 +40,6 @@ class Employees extends Component {
       .catch(err => {
         console.log(400);
       });
-  }
-
-  getEmployee = () => {
-    // make server call to get all employee belonging to this restaurant
-    // for now just make random info
-    const employees = this.state.employees;
-    for (let i = 0; i < 10; i++) {
-      employees.push({
-        image: "/images/avatar_sample.png",
-        name: lorem.generateWords(2),
-        id: rand_string(),
-        telephone: rand_string()
-      });
-    }
-    this.setState({ employees: employees });
   };
 
   deleteEmployee = id => {
@@ -51,7 +49,10 @@ class Employees extends Component {
       if (employees[i]._id === id) {
         employees.splice(i, 1);
         axios
-          .delete(`/api/users/${id}`)
+          .post("/restaurant/delete_employee", {
+            restaurant_id: this.props.res_id,
+            user_id: id
+          })
           .then(msg => {
             console.log(msg);
           })
@@ -67,12 +68,24 @@ class Employees extends Component {
     const employee_username = document.getElementById("add-employee-input")
       .value;
     console.log(`employee to be added: ${employee_username}`);
+    axios
+      .post("/restaurant/add_employee", {
+        restaurant_id: this.props.res_id,
+        username: employee_username
+      })
+      .then(function(response) {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   };
 
   render() {
     return (
       <>
         <h2>Employees</h2>
+        {/* <h2>{this.props.res_id}</h2> */}
         <div className="input-group mb-3">
           <input
             type="text"

@@ -131,9 +131,11 @@ app.post("/restaurant/findRestaurantByOwner", (req, res) => {
 });
 
 app.post("/restaurant/findEmployeesByRestaurant", (req, res) => {
-  User.find({}).then(
-    user => {
-      res.send(user);
+  const restaurant_id = req.body.restaurant_id;
+  console.log("restaurant_id:   --- ", restaurant_id);
+  User.find({ workFor: restaurant_id }).then(
+    users => {
+      res.send(users);
     },
     error => {
       res.send({ code: 404, error });
@@ -163,8 +165,45 @@ app.post("/restaurant/findEmployeesByRestaurant", (req, res) => {
 
 app.post("/restaurant/add_employee", (req, res) => {
   // res.send("1000");
-  const name = req.params.name;
-  res.json(name);
+  const username = req.body.username;
+  const restaurant_id = req.body.restaurant_id;
+  console.log("username:", username);
+  if (username && restaurant_id) {
+    User.findOne({ username: username })
+      .then(function(user) {
+        if (!user) {
+          return;
+        }
+        console.log(user.workFor);
+        console.log(restaurant_id);
+        if (!user.workFor.includes(restaurant_id)) {
+          user.workFor.push(restaurant_id);
+        }
+        user.save();
+        res.send(user);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+});
+
+app.post("/restaurant/delete_employee", (req, res) => {
+  const restaurant_id = req.body.restaurant_id;
+  const user_id = req.body.user_id;
+  console.log(restaurant_id);
+  console.log(user_id);
+  User.findById(user_id, (err, user) => {
+    if (err) {
+      console.log(err);
+    } else {
+      user.workFor = user.workFor.filter(
+        restaurant => restaurant !== restaurant_id
+      );
+      user.save();
+      res.send(user);
+    }
+  });
 });
 
 app.post("/restaurant/findRestaurant", (req, res) => {
