@@ -57,7 +57,10 @@ class Employees extends Component {
       if (employees[i]._id === id) {
         employees.splice(i, 1);
         axios
-          .delete(`/api/users/${id}`)
+          .post("/restaurant/delete_employee", {
+            restaurant_id: this.props.res_id,
+            user_id: id
+          })
           .then(msg => {
             console.log(msg);
           })
