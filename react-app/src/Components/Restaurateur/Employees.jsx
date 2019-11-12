@@ -8,9 +8,16 @@ class Employees extends Component {
   state = { employees: [] };
   constructor(props) {
     super(props);
+    this.addEmployee = this.addEmployee.bind(this);
+    this.fetchEmployee = this.fetchEmployee.bind(this);
+    // this.test1 = this.test1.bind(this);
   }
 
   componentDidMount() {
+    this.fetchEmployee();
+  }
+
+  fetchEmployee = () => {
     const header = {
       headers: {
         Accept: "application/json",
@@ -33,21 +40,6 @@ class Employees extends Component {
       .catch(err => {
         console.log(400);
       });
-  }
-
-  getEmployee = () => {
-    // make server call to get all employee belonging to this restaurant
-    // for now just make random info
-    const employees = this.state.employees;
-    for (let i = 0; i < 10; i++) {
-      employees.push({
-        image: "/images/avatar_sample.png",
-        name: lorem.generateWords(2),
-        id: rand_string(),
-        telephone: rand_string()
-      });
-    }
-    this.setState({ employees: employees });
   };
 
   deleteEmployee = id => {
@@ -90,11 +82,6 @@ class Employees extends Component {
   };
 
   render() {
-    if (this.props.match) {
-      console.log(this.props.match.params.id);
-    } else {
-      console.log("not found");
-    }
     return (
       <>
         <h2>Employees</h2>

@@ -134,19 +134,24 @@ app.post("/restaurant/add_employee", (req, res) => {
   const username = req.body.username;
   const restaurant_id = req.body.restaurant_id;
   console.log("username:", username);
-  User.findOne({ username: username }, function(err, user) {
-    if (err) {
-      log(err);
-      return err;
-    }
-    console.log(user.workFor);
-    console.log(restaurant_id);
-    if (!user.workFor.includes(restaurant_id)) {
-      user.workFor.push(restaurant_id);
-    }
-    user.save();
-    res.send(user);
-  });
+  if (username && restaurant_id) {
+    User.findOne({ username: username })
+      .then(function(user) {
+        if (!user) {
+          return;
+        }
+        console.log(user.workFor);
+        console.log(restaurant_id);
+        if (!user.workFor.includes(restaurant_id)) {
+          user.workFor.push(restaurant_id);
+        }
+        user.save();
+        res.send(user);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 });
 
 app.post("/restaurant/delete_employee", (req, res) => {
