@@ -57,7 +57,7 @@ function App() {
           />
           <Route
             exact
-            path="/restaurateur2"
+            path="/restaurateur2/:id"
             render={() => (
               <RestaurateurPage2
                 cookies={{ cookies, setCookie, removeCookie }}

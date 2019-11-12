@@ -50,7 +50,7 @@ class RestaurateurPage2 extends Component {
         .post(
             "/restaurant/findRestaurant",
             {
-                _id: this.props.location.state.restaurant_id
+                _id: this.props.match.params.id
             },
             header
         )
@@ -74,6 +74,7 @@ class RestaurateurPage2 extends Component {
   };
 
   render() {
+   console.log(this.props.match.params.id);
     console.log(this.state.info);
 
     return (
