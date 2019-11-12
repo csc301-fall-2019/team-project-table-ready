@@ -110,5 +110,7 @@ We will have a To-Do lists including all of our current tasks. We will use trell
   - Phase 1 [Trello board](https://trello.com/b/mTQ6buKm/phase-1)
 
 We will plan our front-end design and make mock-ups. Then we will send the draft to our partner for suggestions. The mock-up will be followed when we implement the frontend.
+  - [Front-end Mock-up](https://docs.google.com/presentation/d/1g1dHOyj21-MOzF1t34b7JpvGQRNcFAWaiYuNGUe0HvY/edit?usp=sharing)
 
 We will also design the database structure as a team. We will decide how and what to store for every object we need in the database. This way, we will know exactly what to expect when fetching/working with database. 
+  - [Database design](https://docs.google.com/presentation/d/1obw6oMljnIAOQM-sE64_XcFNz9TjB4mGw-WpQpQovvU/edit?usp=sharing)
