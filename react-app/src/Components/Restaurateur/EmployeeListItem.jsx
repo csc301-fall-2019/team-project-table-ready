@@ -28,12 +28,12 @@ class EmployeeListItem extends Component {
             </div>
           </div>
           <div className="col col-md-2">
-            <button
+            <span
               className="btn btn-sm btn-outline-danger"
               onClick={deleteEmployee.bind(this, id)}
             >
               Delete
-            </button>
+            </span>
           </div>
         </div>
       </button>

@@ -5,14 +5,12 @@ import uid from "uid";
 import axios from "axios";
 
 class Employees extends Component {
-  state = {employees: []};
+  state = { employees: [] };
   constructor(props) {
     super(props);
-
   }
 
   componentDidMount() {
-
     const header = {
       headers: {
         Accept: "application/json",
@@ -20,22 +18,15 @@ class Employees extends Component {
       }
     };
     axios
-        .post(
-            "/restaurant/findEmployeesByRestaurant",
-
-            header
-
+      .post("/restaurant/findEmployeesByRestaurant", header)
+      .then(employees =>
+        this.setState({ employees: employees.data }, () =>
+          console.log("Customers fetched...", employees)
         )
-
-
-        .then(employees =>
-            this.setState({ employees: employees.data}, () =>
-                console.log("Customers fetched...", employees)
-            )
-        )
-        .catch(err => {
-          console.log(400);
-        });
+      )
+      .catch(err => {
+        console.log(400);
+      });
   }
 
   getEmployee = () => {
@@ -54,36 +45,61 @@ class Employees extends Component {
   };
 
   deleteEmployee = id => {
+    console.log(id);
     const employees = this.state.employees;
     for (let i = 0; i < employees.length; i++) {
-      if (employees[i].id === id) {
-        const all_employees = this.state.employees;
-        for (let j = 0; j < all_employees.length; j++) {
-          if (all_employees[j].id === employees[i].id) {
-            all_employees.splice(j, 1);
-            // server call to delete comment from database required here
-            break;
-          }
-        }
-        break;
+      if (employees[i]._id === id) {
+        employees.splice(i, 1);
+        axios
+          .delete(`/api/users/${id}`)
+          .then(msg => {
+            console.log(msg);
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     }
     this.setState({ employees: employees });
   };
 
+  addEmployee = () => {
+    const employee_username = document.getElementById("add-employee-input")
+      .value;
+    console.log(`employee to be added: ${employee_username}`);
+  };
 
   render() {
     return (
       <>
         <h2>Employees</h2>
+        <div className="input-group mb-3">
+          <input
+            type="text"
+            id="add-employee-input"
+            className="form-control"
+            placeholder="Employee Username"
+            aria-label="Employee Username"
+            aria-describedby="basic-addon2"
+          />
+          <div className="input-group-append">
+            <button
+              className="btn btn-success"
+              id="basic-addon2"
+              onClick={this.addEmployee}
+            >
+              Add Employee
+            </button>
+          </div>
+        </div>
         <div className="list-group employee-list">
           {this.state.employees.map(employee => {
             return (
               <EmployeeListItem
-                key={uid(rand_string())}
+                key={uid()}
                 image={employee.image}
                 name={employee.username}
-                id={employee.id}
+                id={employee._id}
                 telephone={employee.tel}
                 deleteEmployee={this.deleteEmployee}
               />

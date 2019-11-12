@@ -1,30 +1,30 @@
 /* server.js*/
-'use strict';
+"use strict";
 
 const log = console.log;
-const express = require('express');
-const bodyParser = require('body-parser'); // middleware for parsing HTTP body
+const express = require("express");
+const bodyParser = require("body-parser"); // middleware for parsing HTTP body
 const app = express();
-const {ObjectID} = require('mongodb');
-const User = require('./models/user.js');
-const Restaurant = require('./models/Restaurant.js');
-const MenuItem = require('./models/MenuItem.js');
+const { ObjectID } = require("mongodb");
+const User = require("./models/user.js");
+const Restaurant = require("./models/Restaurant.js");
+const MenuItem = require("./models/MenuItem.js");
 
 /* Use statements for the server */
 app.use(express.static("public"));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-require('./mongoose').connect();
+require("./mongoose").connect();
 
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.get('/api/customers', (req, res) => {
+app.get("/api/customers", (req, res) => {
   const customers = [
-    {id: 1, firstName: 'John', lastName: 'Doe'},
-    {id: 2, firstName: 'Brad', lastName: 'Traversy'},
-    {id: 3, firstName: 'Mary', lastName: 'Swanson'},
+    { id: 1, firstName: "John", lastName: "Doe" },
+    { id: 2, firstName: "Brad", lastName: "Traversy" },
+    { id: 3, firstName: "Mary", lastName: "Swanson" }
   ];
 
   res.json(customers);
@@ -41,7 +41,8 @@ app.post("/user/signup", (req, res) => {
     manager: req.body.manager
   });
 
-  user.save()
+  user
+    .save()
     .then(user => {
       res.send("user " + user.username + " saved to database");
     })
@@ -60,13 +61,14 @@ app.post("/restaurant/newRestaurant", (req, res) => {
     owner: req.body.owner
   });
   console.log(restaurant);
-  restaurant.save()
+  restaurant
+    .save()
     .then(restaurant => {
       res.send("restaurant " + restaurant.name + " saved to database");
     })
     .catch(err => {
       log(err);
-      res.send({code: 404, error});
+      res.send({ code: 404, error });
     });
   // return new Promise((resolve, reject) => {
   //
@@ -79,57 +81,70 @@ app.post("/restaurant/newMenuItem", (req, res) => {
     price: req.body.price.value,
     ingredients: req.body.ingredients.value,
     calories: req.body.calories.value,
-    restaurant:"WHAt"
+    restaurant: "WHAt"
   });
-  menuItem.save()
-      .then(menuItem => {
-        res.send("menuItem " + menuItem.name + " saved to database");
-      })
-      .catch(err => {
-        log(err);
-        res.send({code: 404, error});
-      });
+  menuItem
+    .save()
+    .then(menuItem => {
+      res.send("menuItem " + menuItem.name + " saved to database");
+    })
+    .catch(err => {
+      log(err);
+      res.send({ code: 404, error });
+    });
   // return new Promise((resolve, reject) => {
   //
   // });
 });
 
 app.post("/restaurant/findRestaurantByOwner", (req, res) => {
-  Restaurant.find({owner: req.body.owner}).then((restaurant) => {
-    console.log(restaurant);
-    res.send(restaurant);
-  }, (error) => {
-    console.log("why",req.body.owner)
-    res.send({code: 404, error});
-  });
+  Restaurant.find({ owner: req.body.owner }).then(
+    restaurant => {
+      console.log(restaurant);
+      res.send(restaurant);
+    },
+    error => {
+      console.log("why", req.body.owner);
+      res.send({ code: 404, error });
+    }
+  );
   // return new Promise((resolve, reject) => {
   //
   // });
-
 });
 
 app.post("/restaurant/findEmployeesByRestaurant", (req, res) => {
-    User.find({}).then((user) => {
-        res.send(user);
-    }, (error) => {
-        res.send({code: 404, error});
-    });
-    // return new Promise((resolve, reject) => {
-    //
-    // });
+  User.find({}).then(
+    user => {
+      res.send(user);
+    },
+    error => {
+      res.send({ code: 404, error });
+    }
+  );
+  // return new Promise((resolve, reject) => {
+  //
+  // });
+});
 
+app.post("/restaurant/add_employee", (req, res) => {
+  // res.send("1000");
+  const name = req.params.name;
+  res.json(name);
 });
 
 app.post("/restaurant/findRestaurant", (req, res) => {
-    Restaurant.find({_id:req.body._id}).then((user) => {
-        res.send(user);
-    }, (error) => {
-        res.send({code: 404, error});
-    });
-    // return new Promise((resolve, reject) => {
-    //
-    // });
-
+  Restaurant.find({ _id: req.body._id }).then(
+    user => {
+      res.send(user);
+    },
+    error => {
+      res.send({ code: 404, error });
+    }
+  );
+  // return new Promise((resolve, reject) => {
+  //
+  // });
 });
 
 app.post("/waitlist/newWaitlist", (req, res) => {
@@ -140,32 +155,33 @@ app.post("/waitlist/newWaitlist", (req, res) => {
     date_of_arrival: req.body.date_of_arrival,
     estimated_time: req.body.estimated_time
   });
-  waitlist.save()
+  waitlist
+    .save()
     .then(waitlist => {
       res.send("waitlist" + waitlist.name + " saved to database");
     })
     .catch(err => {
       log(err);
-      res.send({code: 404, error})
-    })
-})
+      res.send({ code: 404, error });
+    });
+});
 
 app.post("/waitlist/getWaitlist", (req, res) => {
-  Waitlist.find().then((waitlist) => {
-    res.send(waitlist);
-  }, (error) => {
-    res.send({code: 404, error});
-  });
+  Waitlist.find().then(
+    waitlist => {
+      res.send(waitlist);
+    },
+    error => {
+      res.send({ code: 404, error });
+    }
+  );
   // return new Promise((resolve, reject) => {
   //
   // });
-
 });
 
-
-
-app.get('/api/users', (req, res) => {
-  User.find({}, function (err, users) {
+app.get("/api/users", (req, res) => {
+  User.find({}, function(err, users) {
     if (err) {
       log(err);
       return err;
@@ -175,8 +191,8 @@ app.get('/api/users', (req, res) => {
   });
 });
 
-app.get('/api/restaurants', (req, res) => {
-  Restaurant.find({}, function (err, restaurants) {
+app.get("/api/restaurants", (req, res) => {
+  Restaurant.find({}, function(err, restaurants) {
     if (err) {
       log(err);
       return err;
@@ -185,50 +201,54 @@ app.get('/api/restaurants', (req, res) => {
   });
 });
 
-app.delete('/api/users/:id', (req, res) => {
+app.delete("/api/users/:id", (req, res) => {
   const id = req.params.id;
   User.findByIdAndDelete(id)
     .then(() => {
-      res.json('User ' + id + ' deleted.');
+      res.send("User " + id + " deleted.");
     })
     .catch(err => {
-      res.status(400).json('Error: ' + err);
+      res.status(400).json("Error: " + err);
     });
 });
 
-app.delete('/api/restaurants/:id', (req, res) => {
+app.delete("/api/restaurants/:id", (req, res) => {
   const id = req.params.id;
   Restaurant.findByIdAndDelete(id)
     .then(() => {
-      res.json('Restaurant ' + id + ' deleted.');
+      res.json("Restaurant " + id + " deleted.");
     })
     .catch(err => {
-      res.status(400).json('Error: ' + err);
+      res.status(400).json("Error: " + err);
     });
 });
-
 
 app.get("/user/info", (req, res) => {
   User.find()
     .then(users => res.json(users))
-    .catch(error => res.status(400).json('Err ' + error));
+    .catch(error => res.status(400).json("Err " + error));
 });
 
 // update the information of the user specified by the id.
 app.put("/user/:id", (req, res) => {
-  log('this body is: ' + req.body.email);
-  log('this body is: ' + req.body.password);
-  User.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, todo) => {
-    if (err) {
-      return res.status(500).send(err)
-    }
+  log("this body is: " + req.body.email);
+  log("this body is: " + req.body.password);
+  User.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true },
+    (err, todo) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
 
-    console.log(todo);
-    return res.send(todo);
-  });
+      console.log(todo);
+      return res.send(todo);
+    }
+  );
 });
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
-  log('Listening on port 5000...');
+  log("Listening on port 5000...");
 });
