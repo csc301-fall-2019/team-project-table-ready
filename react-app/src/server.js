@@ -114,9 +114,11 @@ app.post("/restaurant/findRestaurantByOwner", (req, res) => {
 });
 
 app.post("/restaurant/findEmployeesByRestaurant", (req, res) => {
-  User.find({}).then(
-    user => {
-      res.send(user);
+  const restaurant_id = req.body.restaurant_id;
+  console.log("restaurant_id:   --- ", restaurant_id);
+  User.find({ workFor: restaurant_id }).then(
+    users => {
+      res.send(users);
     },
     error => {
       res.send({ code: 404, error });

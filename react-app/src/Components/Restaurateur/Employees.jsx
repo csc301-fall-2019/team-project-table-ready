@@ -18,7 +18,13 @@ class Employees extends Component {
       }
     };
     axios
-      .post("/restaurant/findEmployeesByRestaurant", header)
+      .post(
+        "/restaurant/findEmployeesByRestaurant",
+        {
+          restaurant_id: this.props.res_id
+        },
+        header
+      )
       .then(employees =>
         this.setState({ employees: employees.data }, () =>
           console.log("Customers fetched...", employees)
