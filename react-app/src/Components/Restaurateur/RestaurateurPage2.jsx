@@ -9,10 +9,12 @@ import Menu from "./Menu";
 import Navbar from "../Navbar";
 import DressCode from "./DressCode";
 import uid from "uid";
+import axios from "axios";
 const queryString = require("query-string");
 
 class RestaurateurPage2 extends Component {
   state = {
+    info: [],
     curState: <Employees />,
     functions: [
       {
@@ -37,6 +39,32 @@ class RestaurateurPage2 extends Component {
       }
     ]
   };
+  componentDidMount() {
+    const header = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    };
+    axios
+      .post(
+        "/restaurant/findRestaurant",
+        {
+          _id: this.props.location.state.restaurant_id
+        },
+        header
+      )
+
+      .then(restaurant =>
+        this.setState({ info: restaurant.data[0] }, () =>
+          console.log("Customers fetched...", this.state.info)
+        )
+      )
+      .catch(err => {
+        console.log(400);
+      });
+  }
+
   showComponent = component => {
     this.setState({
       curState: component
@@ -44,10 +72,8 @@ class RestaurateurPage2 extends Component {
   };
 
   render() {
-    // console.log(this.props.location.state.restaurant_id);
-    const values = queryString.parse(window);
-    console.log(values);
-    console.log(values.origin);
+    console.log(this.state.info);
+
     return (
       <div>
         <Navbar />
@@ -58,23 +84,22 @@ class RestaurateurPage2 extends Component {
                 <h2>Restaurant Info</h2>
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item">
-                    <strong>Name: </strong> restaurant name
+                    <strong>Name: </strong> {this.state.info.name}
                   </li>
                   <li className="list-group-item">
                     <strong>ID: </strong> 9901848184
                   </li>
                   <li className="list-group-item">
-                    <strong>Address: </strong> 960 East Whitemarsh Street
-                    Astoria, NY 11102
+                    <strong>Address: </strong> {this.state.info.location}
                   </li>
                   <li className="list-group-item">
-                    <strong>Telephone: </strong> 123-456-7890
+                    <strong>Telephone: </strong> {this.state.info.phoneNumber}
                   </li>
                   <li className="list-group-item">
-                    <strong>Rating: </strong> 4
+                    <strong>Rating: </strong> {this.state.info.Rating}
                   </li>
                   <li className="list-group-item">
-                    <strong>Cuisine: </strong> Canadian
+                    <strong>Cuisine: </strong> {this.state.info.Cuisine}
                   </li>
                 </ul>
                 <h2>Options</h2>

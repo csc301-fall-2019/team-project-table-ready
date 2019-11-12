@@ -2,21 +2,31 @@ import React, { Component } from "react";
 import EmployeeListItem from "./EmployeeListItem";
 import { lorem, rand_string } from "../../util";
 import uid from "uid";
+import axios from "axios";
 
 class Employees extends Component {
-  state = {};
+  state = { employees: [] };
   constructor(props) {
     super(props);
-    this.state = {
-      employees: [
-        {
-          image: "/images/avatar_sample.png",
-          name: lorem.generateWords(2),
-          id: rand_string(),
-          telephone: rand_string()
-        }
-      ]
+  }
+
+  componentDidMount() {
+    const header = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
     };
+    axios
+      .post("/restaurant/findEmployeesByRestaurant", header)
+      .then(employees =>
+        this.setState({ employees: employees.data }, () =>
+          console.log("Customers fetched...", employees)
+        )
+      )
+      .catch(err => {
+        console.log(400);
+      });
   }
 
   getEmployee = () => {
@@ -35,45 +45,46 @@ class Employees extends Component {
   };
 
   deleteEmployee = id => {
+    console.log(id);
     const employees = this.state.employees;
     for (let i = 0; i < employees.length; i++) {
-      if (employees[i].id === id) {
-        const all_employees = this.state.employees;
-        for (let j = 0; j < all_employees.length; j++) {
-          if (all_employees[j].id === employees[i].id) {
-            all_employees.splice(j, 1);
-            // server call to delete comment from database required here
-            break;
-          }
-        }
-        break;
+      if (employees[i]._id === id) {
+        employees.splice(i, 1);
+        axios
+          .delete(`/api/users/${id}`)
+          .then(msg => {
+            console.log(msg);
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     }
     this.setState({ employees: employees });
   };
 
-  componentDidMount() {
-    this.getEmployee();
-  }
-
-  addEmployee = () => {};
+  addEmployee = () => {
+    const employee_username = document.getElementById("add-employee-input")
+      .value;
+    console.log(`employee to be added: ${employee_username}`);
+  };
 
   render() {
-    const employees = this.state.employees;
     return (
       <>
         <h2>Employees</h2>
-        <div class="input-group mb-3">
+        <div className="input-group mb-3">
           <input
             type="text"
-            class="form-control"
-            placeholder="Employee id"
-            aria-label="Employee id"
+            id="add-employee-input"
+            className="form-control"
+            placeholder="Employee Username"
+            aria-label="Employee Username"
             aria-describedby="basic-addon2"
           />
-          <div class="input-group-append">
+          <div className="input-group-append">
             <button
-              class="btn btn-success"
+              className="btn btn-success"
               id="basic-addon2"
               onClick={this.addEmployee}
             >
@@ -82,14 +93,14 @@ class Employees extends Component {
           </div>
         </div>
         <div className="list-group employee-list">
-          {employees.map(employee => {
+          {this.state.employees.map(employee => {
             return (
               <EmployeeListItem
                 key={uid()}
-                image={"/images/avatar_sample.png"}
-                name={employee.name}
-                id={employee.id}
-                telephone={employee.telephone}
+                image={employee.image}
+                name={employee.username}
+                id={employee._id}
+                telephone={employee.tel}
                 deleteEmployee={this.deleteEmployee}
               />
             );
