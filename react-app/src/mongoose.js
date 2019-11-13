@@ -9,7 +9,7 @@ function connect() {
     .connect(url, { useNewUrlParser: true })
     .then(msg => {
       console.log(
-        " \n\n-----------------\nsuccessfully connected to Database-----------------\n\n"
+        " \n\n-----------------\nsuccessfully connected to Database\n-----------------\n\n"
       );
     })
     .catch(error => console.log(error));

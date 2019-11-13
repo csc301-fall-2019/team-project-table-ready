@@ -49,7 +49,7 @@ function App() {
           <Route path="/error" component={NotFound} />
           <Route
             exact
-            path="/restaurateur"
+            path="/restaurateur/:id"
             render={() => (
               <RestaurateurPage
                 cookies={{ cookies, setCookie, removeCookie }}
