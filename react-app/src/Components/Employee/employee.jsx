@@ -1,21 +1,12 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { withStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import './employee.css'
 import Card from 'react-bootstrap/Card'
-import CardDeck from 'react-bootstrap/CardDeck'
 import Navbar from "../Navbar.jsx";
-import CardGroup from 'react-bootstrap/CardGroup'
 import CardColumns from 'react-bootstrap/CardColumns'
-import reservations_manager from './dummy_data_for_drag.jsx'
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Favorite from '@material-ui/icons/Favorite';
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
-import Button from 'react-bootstrap/Button'
-import CheckIcon from '@material-ui/icons/Check';
 import '@y0c/react-datepicker/assets/styles/calendar.scss';
 import { DatePicker } from '@y0c/react-datepicker';
 import { slide	 as Menu } from 'react-burger-menu'
@@ -23,6 +14,8 @@ import all_table from './dummy_table_data'
 import Draggable, {DraggableCore} from 'react-draggable';
 import VerticalModal from './verticalModal';
 import axios from 'axios';
+import HeaderSubHeader from "semantic-ui-react/dist/commonjs/elements/Header/HeaderSubheader";
+import {Redirect} from 'react-router-dom'
 // fake data generator
 
 // a little function to help us with reordering the result
@@ -234,6 +227,7 @@ const initial_color = (() => {
 class Employee extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props.cookies.cookies)
     this.state = {
       all_seats: [],
       items: [],
@@ -251,24 +245,56 @@ class Employee extends Component {
     };
   }
   fetch_data = () => {
-    let data
     const header = {
-      headers: {'Accept': 'application/json',
-          'Content-Type': 'application/json'
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
       }
     }; 
-    axios.post('/waitlist/getWaitlist', {}, header)
+    axios.post('/waitlist/getWaitlist')
       .then(res => this.setState({all_seats: res.data}))
       .catch(function (error) {
         console.log(error);
       });
   }
-    
+  delete_data = (data) => {
+    const header = {
+      headers: {'Accept': 'application/text',
+          'Content-Type': 'application/text'
+      }
+    }; 
+    axios.delete('/api/removeWaitlist/' + data._id)
+    .then((response) => {
+      console.log(response);
+    }, (error) => {
+      console.log(error);
+    });
+  }
+  update_data = (data) => {
+    const header = {
+      headers: {'Accept': 'application/text',
+          'Content-Type': 'application/text'
+      }
+    }; 
+    console.log(data._id)
+    axios.put('/updateWaitlist/' + data._id, {
+      id: data.id,
+      name: data.name,
+      people: data.people,
+      date_of_arrival: data.date_of_arrival,
+      estimated_time: data.estimated_time,
+      reserved: data.reserved
+    })
+    .then((response) => {
+      console.log(response);
+    }, (error) => {
+      console.log(error);
+    });
+  }
 
-  getList = (id) => this.state[this.idtoList[id]];
 
   handleChange = () => {
-    this.setState({checkedG:!this.state.checkedG})
+    this.setState({ checkedG: !this.state.checkedG });
   };
   handleStart = (index) => {
     let tmp = this.state.to_be_reserved[index]
@@ -278,8 +304,10 @@ class Employee extends Component {
   handleStop = (index) => {
     this.setOccupied()
     const i = this.state.items.indexOf(this.state.to_be_reserved[index])
-    this.state.items[i].reserved = true
+    
     if(this.state.changed){
+      this.state.items[i].reserved = true
+      this.update_data(this.state.items[i])
       let tmp = []
       this.state.to_be_reserved.forEach((item) => {
         if(item == this.state.user_obj){
@@ -288,111 +316,129 @@ class Employee extends Component {
         else{
           tmp.push(item)
         }
-      })
+      });
       this.setState({
         to_be_reserved: tmp,
-        changed: false
+        changed: false,
+        draggin: false
       })
     }
-  }
+  };
   setOccupied = () => {
-    for(let i = 0; i < this.state.reservations_color.length; i++){
-      if(this.state.reservations_color[i] == "green"){
-        this.state.all_table[i].table_occupied = true
+    for (let i = 0; i < this.state.reservations_color.length; i++) {
+      if (this.state.reservations_color[i] == "green") {
+        this.state.all_table[i].table_occupied = true;
       }
     }
-  }
-  change_menu_state = (index) => {
-    this.setState({menu_open:!this.state.menu_open})
+  };
+  change_menu_state = index => {
+    this.setState({ menu_open: !this.state.menu_open });
     let in_list = false;
     this.state.to_be_reserved.forEach(element => {
-      if(element == this.state.items[index]){
+      if (element == this.state.items[index]) {
         in_list = true;
       }
     });
-    if(in_list == false){
-      this.state.to_be_reserved.push(this.state.items[index])
-      this.setState({to_be_reserved:this.state.to_be_reserved})
+    if (in_list == false) {
+      this.state.to_be_reserved.push(this.state.items[index]);
+      this.setState({ to_be_reserved: this.state.to_be_reserved });
     }
 
   }
   remove_reservation_from_items = (index) => {
+    this.delete_data(this.state.items[index])
     this.setState({
       //TODO: Backend handle
-      items: this.state.items.filter(i=>i.id != this.state.items[index].id)
-    })
-  }
-  info = (e) => {
+      items: this.state.items.filter(i => i.id != this.state.items[index].id)
+    });
+  };
+  info = e => {
     // console.log("hi")
-  }
-  removefocus = (e) => {
-    e.preventDefault()
-  }
-  /* change color of card */ 
-  checkcapacity = (index) => {
+  };
+  removefocus = e => {
+    e.preventDefault();
+  };
+  /* change color of card */
+
+  checkcapacity = index => {
     // const cur_table = document.getElementById(`Table-${index}`)
     // this.setState({current_table:cur_table})
-    const cur_table_obj = this.state.all_table[index]
-    if (this.state.draggin){
-      if (cur_table_obj.table_capacity >= this.state.user_obj.people && cur_table_obj.table_occupied == false){
-        this.state.reservations_color[index] = "green"
-        this.setState({reservations_color:this.state.reservations_color, changed: true})
+    const cur_table_obj = this.state.all_table[index];
+    if (this.state.draggin) {
+      if (
+        cur_table_obj.table_capacity >= this.state.user_obj.people &&
+        cur_table_obj.table_occupied == false
+      ) {
+        this.state.reservations_color[index] = "green";
+        this.setState({
+          reservations_color: this.state.reservations_color,
+          changed: true
+        });
+      } else if (cur_table_obj.table_occupied == false) {
+        this.state.reservations_color[index] = "red";
+        this.setState({
+          reservations_color: this.state.reservations_color,
+          changed: false
+        });
       }
-      else if(cur_table_obj.table_occupied == false){
-        this.state.reservations_color[index] = "red"
-        this.setState({reservations_color:this.state.reservations_color, changed: false})
-      }
     }
-  }
-  resumecard = (index) => {
-    if(this.state.all_table[index].table_occupied == false){
-      this.state.reservations_color[index] = "#f8f9fa"
-      this.setState({reservations_color:this.state.reservations_color, changed: false})
+  };
+  resumecard = index => {
+    if (this.state.all_table[index].table_occupied == false) {
+      this.state.reservations_color[index] = "#f8f9fa";
+      this.setState({
+        reservations_color: this.state.reservations_color,
+        changed: false
+      });
     }
-
-  }
-  showdate = (value) => {
-    const year = value.$y
-    const month = (value.$M) + 1
-    const day = (value.$D)
-    const date = `${year}/${month}/${day}`
-    this.setState({current_date:date})
-  }
-  handleStateChange = (state) => {
-    this.setState({menu_open:state.isOpen})
-  }
-  handleMouseOver = (index) => {
-    if(this.state.draggin){
-      this.checkcapacity(index)
+  };
+  showdate = value => {
+    const year = value.$y;
+    const month = value.$M + 1;
+    const day = value.$D;
+    const date = `${year}/${month}/${day}`;
+    this.setState({ current_date: date });
+  };
+  handleStateChange = state => {
+    this.setState({ menu_open: state.isOpen });
+  };
+  handleMouseOver = index => {
+    if (this.state.draggin) {
+      this.checkcapacity(index);
     }
-  }
-  empty_seats = (index) => {
-    if(this.state.all_table[index].table_occupied == true){
-      this.state.all_table[index].table_occupied = false
-      this.resumecard(index)
+  };
+  empty_seats = index => {
+    if (this.state.all_table[index].table_occupied == true) {
+      this.state.all_table[index].table_occupied = false;
+      this.resumecard(index);
     }
-  }
-  remove_from_reserved = (index) =>{
+  };
+  remove_from_reserved = index => {
     this.setState({
       //TODO: Backend handle
-      to_be_reserved: this.state.to_be_reserved.filter(i=>i.id != this.state.to_be_reserved[index].id)
-    })
-  }
+      to_be_reserved: this.state.to_be_reserved.filter(
+        i => i.id != this.state.to_be_reserved[index].id
+      )
+    });
+  };
   filter_date = () => {
     this.fetch_data()
+    console.log(this.state.all_seats)
     this.setState({
-      items: this.state.all_seats.filter((value) => value.date_of_arrival == this.state.current_date)
-    })
-  }
-  setModalState = (state) => {
+      items: this.state.all_seats.filter(
+        value => value.date_of_arrival == this.state.current_date
+      )
+    });
+  };
+  setModalState = state => {
     this.setState({
       modal_show: state
-    })
-  }
-  add_reservation = (name, ppl_num, date, time) =>{
+    });
+  };
+  add_reservation = (name, ppl_num, date, time) => {
     const new_wl = {
-      id: this.state.all_seats.length + 1,
-      Name: name,
+      id: Math.random().toString(36).substr(2, 9),
+      name: name,
       people: ppl_num,
       date_of_arrival: date,
       estimated_time: time
@@ -407,7 +453,7 @@ class Employee extends Component {
 
     axios.post('/waitlist/newWaitlist', {
       id: new_wl.id,
-      name: new_wl.Name,
+      name: new_wl.name,
       people: new_wl.people,
       date_of_arrival: new_wl.date_of_arrival,
       estimated_time: new_wl.estimated_time
@@ -417,7 +463,6 @@ class Employee extends Component {
       }, (error) => {
           console.log(error);
       });
-    this.fetch_data()
   }
   render_button = (index) =>{
     if(this.state.items[index].reserved){
@@ -428,134 +473,150 @@ class Employee extends Component {
     }
   }
 
+  is_authenticated = () => {
+    const user = this.props.cookies.cookies.cur_user
+    if (user.accountType != "Admin"){
+      return true
+    }
+    else{
+      return false}
+  }
+
   // Normally you would want to split things out into separate components.
   // But in this example everything is just done in one place for simplicity
   render() {
-    let draggables = []
-    this.state.to_be_reserved.forEach((item,index) => {
-      if(item!=null){
-        draggables.push(
-          <Draggable  onStart={() => this.handleStart(index)}  onStop={() => this.handleStop(index)}>
-                      <Card id = {`usercard-${index}`} draggable = "true" style={{backgroundColor:"#f8f9fa", width: '18rem' }}>
-                        <Card.Header className = "header-of-card">
-                          <div className = "pic-container">
-                            <strong>
-                              {item.name}
-                            </strong>
-                            <img className = "user-pic"src = "./images/restaurant_images/boy.png"></img>
-                          </div>
-                        </Card.Header>
-                        <Card.Body>
-                          <div>
-                            <span><img className = "info-png" src = "./images/restaurant_images/calendar.png"></img><span className = 
-                            "reservation_time">{item.estimated_time}</span><span className = "reservation_date">/{item.date_of_arrival}</span></span>
-                          </div>
-                          <div className = "num_people">
-                            <span><img className = "info-png" src = "./images/restaurant_images/avatar.png"></img><span className = "attendence">{item.people}</span></span>
-                          </div>
-                          <div className = "user_profile_holder">
-                            <div className = "check-container">  
-                              <button class="reject-button" onClick = {(e) => this.remove_from_reserved(index)} onMouseDown = {this.removefocus}><img src = "./images/restaurant_images/no-stopping.png"></img></button>
+    if (this.is_authenticated()){
+      let draggables = []
+      this.state.to_be_reserved.forEach((item,index) => {
+        if(item!=null){
+          draggables.push(
+            <Draggable  onStart={() => this.handleStart(index)}  onStop={() => this.handleStop(index)}>
+                        <Card id = {`usercard-${index}`} draggable = "true" style={{backgroundColor:"#f8f9fa", width: '18rem' }}>
+                          <Card.Header className = "header-of-card">
+                            <div className = "pic-container">
+                              <strong>
+                                {item.name}
+                              </strong>
+                              <img className = "user-pic"src = "./images/restaurant_images/boy.png"></img>
                             </div>
-                          </div>
-                        </Card.Body>
-                      </Card>
-                    </Draggable>
-        )
-      }
-      else{
-        draggables.push(null)
-      }
-    })
-    return (
-      <div id = "outer-container" className = "card-container">
-        <Menu pageWrapId={ "page-wrap" } width = {'1000px'} outerContainerId={ "outer-container" } right disableAutoFocus customBurgerIcon={false} isOpen={this.state.menu_open}
-         onStateChange={(state) => this.handleStateChange(state)} handleMousemove = {() => handleMousemove(this)}>
-          <span id = "reservation_container" onMouseDown = {this.removefocus}>
+                          </Card.Header>
+                          <Card.Body>
+                            <div>
+                              <span><img className = "info-png" src = "./images/restaurant_images/calendar.png"></img><span className = 
+                              "reservation_time">{item.estimated_time}</span><span className = "reservation_date">/{item.date_of_arrival}</span></span>
+                            </div>
+                            <div className = "num_people">
+                              <span><img className = "info-png" src = "./images/restaurant_images/avatar.png"></img><span className = "attendence">{item.people}</span></span>
+                            </div>
+                            <div className = "user_profile_holder">
+                              <div className = "check-container">  
+                                <button class="reject-button" onClick = {(e) => this.remove_from_reserved(index)} onMouseDown = {this.removefocus}><img src = "./images/restaurant_images/no-stopping.png"></img></button>
+                              </div>
+                            </div>
+                          </Card.Body>
+                        </Card>
+                      </Draggable>
+          )
+        }
+        else{
+          draggables.push(null)
+        }
+      })
+      return (
+        <div id = "outer-container" className = "card-container">
+          <Menu pageWrapId={ "page-wrap" } width = {'1000px'} outerContainerId={ "outer-container" } right disableAutoFocus customBurgerIcon={false} isOpen={this.state.menu_open}
+           onStateChange={(state) => this.handleStateChange(state)} handleMousemove = {() => handleMousemove(this)}>
+            <span id = "reservation_container" onMouseDown = {this.removefocus}>
+              {
+                draggables.map((item,index) => (
+                  //Fix bug
+                  item
+                ))
+              }
+            </span>
+            <span id = "avaliable_seats_container" onMouseDown = {this.removefocus}>
+              {
+                this.state.all_table.map((item,index) => (
+                  <Card id = {`Table-${index}`} className = "tablecard" style={{backgroundColor:this.state.reservations_color[index],  width: '18rem' }}  onMouseOver = {(e) => this.handleMouseOver(index)} onMouseLeave = {() => this.resumecard(index)}>
+                    <Card.Header className = "header-of-card">
+                      <div className = "pic-container">
+                        <strong>
+                          {`Table-${index+1}`}
+                        </strong>
+                        <img className = "user-pic"src = "./images/restaurant_images/table.png"></img>
+                      </div>
+                    </Card.Header>
+                    <Card.Body>
+                      <div>
+                        <span>Capacity: {item.table_capacity}</span>
+                      </div>
+                      <div className = "user_profile_holder">
+                        <div className = "check-container">  
+                            <button class="reject-button" onClick = {(e) => this.empty_seats(index)} onMouseDown = {this.removefocus}><img src = "./images/restaurant_images/no-stopping.png"></img></button>
+                        </div>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                ))
+                }
+              </span>
+        </Menu>
+        <div id = "page-wrap">
+          <Navbar cookies={this.props.cookies}/>
+          <div id = "cal" style={{height: '80px'}}>
+            <DatePicker onChange={(value)=>this.showdate(value)} showDefaultIcon></DatePicker>
+            <button id = "date-confirm" onClick={()=>this.filter_date()}>Confirm</button>
+            <button id = "date-confirm" onClick={()=>this.setModalState(true)}>Add Reservation</button>
+          </div>
+          <CardColumns id = "content-wrapper">
             {
-              draggables.map((item,index) => (
-                //Fix bug
-                item
-              ))
-            }
-          </span>
-          <span id = "avaliable_seats_container" onMouseDown = {this.removefocus}>
-            {
-              this.state.all_table.map((item,index) => (
-                <Card id = {`Table-${index}`} className = "tablecard" style={{backgroundColor:this.state.reservations_color[index],  width: '18rem' }}  onMouseOver = {(e) => this.handleMouseOver(index)} onMouseLeave = {() => this.resumecard(index)}>
+              this.state.items.map((item,index) => (
+                <Card className = "usercard" bg="light" style={{ width: '18rem' }}>
                   <Card.Header className = "header-of-card">
                     <div className = "pic-container">
                       <strong>
-                        {`Table-${index+1}`}
+                        {item.name}
                       </strong>
-                      <img className = "user-pic"src = "./images/restaurant_images/table.png"></img>
+                      <img className = "user-pic"src = "./images/restaurant_images/boy.png"></img>
+                      
                     </div>
                   </Card.Header>
                   <Card.Body>
                     <div>
-                      <span>Capacity: {item.table_capacity}</span>
+                      <span><img className = "info-png" src = "./images/restaurant_images/calendar.png"></img><span className = 
+                      "reservation_time">{item.estimated_time}</span><span className = "reservation_date">/{item.date_of_arrival}</span></span>
+                    </div>
+                    <div className = "num_people">
+                      <span><img className = "info-png" src = "./images/restaurant_images/avatar.png"></img><span className = "attendence">{item.people}</span></span>
+                    </div>
+                    <div>
+                    <span><img className = "info-png" src = "./images/restaurant_images/receptionist.png"></img><span className = "attendence">{item.reserved ? 'Reserved' : 'Not Reserved'}</span></span>
                     </div>
                     <div className = "user_profile_holder">
                       <div className = "check-container">  
-                          <button class="reject-button" onClick = {(e) => this.empty_seats(index)} onMouseDown = {this.removefocus}><img src = "./images/restaurant_images/no-stopping.png"></img></button>
+                          {this.render_button(index)}
+                          <button class="reject-button" onClick = {(e) => this.remove_reservation_from_items(index)} onMouseDown = {this.removefocus}><img src = "./images/restaurant_images/no-stopping.png"></img></button>
                       </div>
                     </div>
                   </Card.Body>
                 </Card>
               ))
-              }
-            </span>
-      </Menu>
-      <div id = "page-wrap">
-      <Navbar />
-        <div id = "cal" style={{height: '80px'}}>
-          <DatePicker onChange={(value)=>this.showdate(value)} showDefaultIcon></DatePicker>
-          <button id = "date-confirm" onClick={()=>this.filter_date()}>Confirm</button>
-          <button id = "date-confirm" onClick={()=>this.setModalState(true)}>Add Reservation</button>
+            }
+            </CardColumns>
+            <VerticalModal 
+              show={this.state.modal_show}
+              onHide={()=>this.setModalState(false)}
+              add_reservation = {this.add_reservation}
+            ></VerticalModal>
+          </div>
         </div>
-        <CardColumns id = "content-wrapper">
-          {
-            this.state.items.map((item,index) => (
-              <Card className = "usercard" bg="light" style={{ width: '18rem' }}>
-                <Card.Header className = "header-of-card">
-                  <div className = "pic-container">
-                    <strong>
-                      {item.name}
-                    </strong>
-                    <img className = "user-pic"src = "./images/restaurant_images/boy.png"></img>
-                    
-                  </div>
-                </Card.Header>
-                <Card.Body>
-                  <div>
-                    <span><img className = "info-png" src = "./images/restaurant_images/calendar.png"></img><span className = 
-                    "reservation_time">{item.estimated_time}</span><span className = "reservation_date">/{item.date_of_arrival}</span></span>
-                  </div>
-                  <div className = "num_people">
-                    <span><img className = "info-png" src = "./images/restaurant_images/avatar.png"></img><span className = "attendence">{item.people}</span></span>
-                  </div>
-                  <div>
-                  <span><img className = "info-png" src = "./images/restaurant_images/receptionist.png"></img><span className = "attendence">{item.reserved ? 'Reserved' : 'Not Reserved'}</span></span>
-                  </div>
-                  <div className = "user_profile_holder">
-                    <div className = "check-container">  
-                        {this.render_button(index)}
-                        <button class="reject-button" onClick = {(e) => this.remove_reservation_from_items(index)} onMouseDown = {this.removefocus}><img src = "./images/restaurant_images/no-stopping.png"></img></button>
-                    </div>
-                  </div>
-                </Card.Body>
-              </Card>
-            ))
-          }
-          </CardColumns>
-          <VerticalModal 
-            show={this.state.modal_show}
-            onHide={()=>this.setModalState(false)}
-            add_reservation = {this.add_reservation}
-          ></VerticalModal>
-        </div>
-      </div>
-    );
+      );
+    }
+    else{
+      return(
+        <Redirect to = "/error"></Redirect>
+      )
+    }
   }
 }
 
