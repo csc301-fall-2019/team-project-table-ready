@@ -50,11 +50,14 @@ const RestaurantSchema = new Schema({
     operationHour:{
         type:String,
         required:false
+<<<<<<< HEAD
     },
     reservations:{
         type: Array,
         required: false,
         default: []
+=======
+>>>>>>> 1a020021e7719ceecc2ddb67428783718998e7f4
     }
 });
 

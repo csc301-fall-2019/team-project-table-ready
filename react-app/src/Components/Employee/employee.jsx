@@ -23,6 +23,7 @@ import all_table from './dummy_table_data'
 import Draggable, {DraggableCore} from 'react-draggable';
 import VerticalModal from './verticalModal';
 import axios from 'axios';
+import HeaderSubHeader from "semantic-ui-react/dist/commonjs/elements/Header/HeaderSubheader";
 import {Redirect} from 'react-router-dom'
 // fake data generator
 
@@ -261,42 +262,75 @@ class Employee extends Component {
         Accept: "application/json",
         "Content-Type": "application/json"
       }
-    };
-    axios
-      .post("/waitlist/getWaitlist", {}, header)
-      .then(res => this.setState({ all_seats: res.data }))
-      .catch(function(error) {
+    }; 
+    axios.post('/waitlist/getWaitlist')
+      .then(res => this.setState({all_seats: res.data}))
+      .catch(function (error) {
         console.log(error);
       });
-  };
+  }
+  delete_data = (data) => {
+    const header = {
+      headers: {'Accept': 'application/text',
+          'Content-Type': 'application/text'
+      }
+    }; 
+    axios.delete('/api/removeWaitlist/' + data._id)
+    .then((response) => {
+      console.log(response);
+    }, (error) => {
+      console.log(error);
+    });
+  }
+  update_data = (data) => {
+    const header = {
+      headers: {'Accept': 'application/text',
+          'Content-Type': 'application/text'
+      }
+    }; 
+    console.log(data._id)
+    axios.put('/updateWaitlist/' + data._id, {
+      id: data.id,
+      name: data.name,
+      people: data.people,
+      date_of_arrival: data.date_of_arrival,
+      estimated_time: data.estimated_time,
+      reserved: data.reserved
+    })
+    .then((response) => {
+      console.log(response);
+    }, (error) => {
+      console.log(error);
+    });
+  }
 
-  getList = id => this.state[this.idtoList[id]];
 
   handleChange = () => {
     this.setState({ checkedG: !this.state.checkedG });
   };
-  handleStart = index => {
-    let tmp = this.state.to_be_reserved[index];
-    this.setState({ user_obj: tmp });
-    this.setState({ draggin: true });
-  };
-  handleStop = index => {
-    this.setOccupied();
-    const i = this.state.items.indexOf(this.state.to_be_reserved[index]);
-    this.state.items[i].reserved = true;
-    if (this.state.changed) {
-      let tmp = [];
-      this.state.to_be_reserved.forEach(item => {
-        if (item == this.state.user_obj) {
-          tmp.push(null);
-        } else {
-          tmp.push(item);
+  handleStart = (index) => {
+    let tmp = this.state.to_be_reserved[index]
+    this.setState({user_obj:tmp})
+    this.setState({draggin:true})
+  }
+  handleStop = (index) => {
+    this.setOccupied()
+    const i = this.state.items.indexOf(this.state.to_be_reserved[index])
+    
+    if(this.state.changed){
+      this.state.items[i].reserved = true
+      this.update_data(this.state.items[i])
+      let tmp = []
+      this.state.to_be_reserved.forEach((item) => {
+        if(item == this.state.user_obj){
+          tmp.push(null)
         }
       });
       this.setState({
         to_be_reserved: tmp,
-        changed: false
-      });
+        changed: false,
+        draggin: false
+      })
     }
   };
   setOccupied = () => {
@@ -318,8 +352,10 @@ class Employee extends Component {
       this.state.to_be_reserved.push(this.state.items[index]);
       this.setState({ to_be_reserved: this.state.to_be_reserved });
     }
-  };
-  remove_reservation_from_items = index => {
+
+  }
+  remove_reservation_from_items = (index) => {
+    this.delete_data(this.state.items[index])
     this.setState({
       //TODO: Backend handle
       items: this.state.items.filter(i => i.id != this.state.items[index].id)
@@ -395,7 +431,8 @@ class Employee extends Component {
     });
   };
   filter_date = () => {
-    this.fetch_data();
+    this.fetch_data()
+    console.log(this.state.all_seats)
     this.setState({
       items: this.state.all_seats.filter(
         value => value.date_of_arrival == this.state.current_date
@@ -409,8 +446,8 @@ class Employee extends Component {
   };
   add_reservation = (name, ppl_num, date, time) => {
     const new_wl = {
-      id: this.state.all_seats.length + 1,
-      Name: name,
+      id: Math.random().toString(36).substr(2, 9),
+      name: name,
       people: ppl_num,
       date_of_arrival: date,
       estimated_time: time
@@ -425,7 +462,7 @@ class Employee extends Component {
 
     axios.post('/waitlist/newWaitlist', {
       id: new_wl.id,
-      name: new_wl.Name,
+      name: new_wl.name,
       people: new_wl.people,
       date_of_arrival: new_wl.date_of_arrival,
       estimated_time: new_wl.estimated_time

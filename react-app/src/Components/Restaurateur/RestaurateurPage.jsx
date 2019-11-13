@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../../Stylesheets/restaurateur_page.scss";
 import RestaurantListItem from "./RestaurantListItem";
+import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
 import {Redirect} from 'react-router-dom'
 import Navbar from "../Navbar";
@@ -49,7 +50,9 @@ class RestaurateurPage extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-3 info">
-                <h2 className="">{this.props.cookies.cookies.cur_user.username}</h2>
+                <h2 className="">
+                  {this.props.cookies.cookies.cur_user.username}
+                </h2>
                 <div>
                   <img
                     src={process.env.PUBLIC_URL + "/images/avatar_sample.png"}
@@ -58,7 +61,6 @@ class RestaurateurPage extends Component {
                   />
                 </div>
                 <ul className="list-group">
-
                   <li className="list-group-item">
                     <strong>Telephone: </strong>
                     {this.props.cookies.cookies.cur_user.tel}
