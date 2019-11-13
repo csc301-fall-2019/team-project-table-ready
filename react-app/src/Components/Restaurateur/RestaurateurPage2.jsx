@@ -13,35 +13,50 @@ import uid from "uid";
 import axios from "axios";
 import EditRestaurant from "./EditRestaurant";
 
-const queryString = require("query-string");
-
 class RestaurateurPage2 extends Component {
-    state = {
-        info: [],
-        curState: <Employees res_id={this.props.match.params.id}/>,
-        functions: [
-            {
-                id: 1,
-                title: "Employees",
-                model: <Employees res_id={this.props.match.params.id}/>
-            },
-            {
-                id: 2,
-                title: "Dress Code",
-                model: <DressCode id={this.props.match.params.id}/>
-            },
-            {
-                id: 3,
-                title: "Menu",
-                model: <Menu/>
-            },
-            {
-                id: 4,
-                title: "Payment",
-                model: <Pay/>
-            }
-        ]
+  state = {
+    info: [],
+    curState: <Employees res_id={this.props.match.params.id} />,
+    functions: [
+      {
+        id: 1,
+        title: "Employees",
+        model: <Employees res_id={this.props.match.params.id} />
+      },
+      {
+        id: 2,
+        title: "Dress Code",
+        model: <DressCode id={this.props.match.params.id} />
+      },
+      {
+        id: 3,
+        title: "Menu",
+        model: <Menu />
+      },
+      {
+        id: 4,
+        title: "Payment",
+        model: <Pay />
+      }
+    ]
+  };
+
+  is_authenticated = () => {
+    const cur_user = this.props.cookies.cookies.cur_user;
+    if (cur_user.accountType !== "Employee") {
+      return true;
+    }
+    return false;
+  };
+
+  componentDidMount() {
+    const header = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
     };
+  }
     componentDidMount() {
       const header = {
           headers: {
@@ -82,8 +97,13 @@ class RestaurateurPage2 extends Component {
   }
 
   render() {
-    if (this.is_authenticated()){
-      return (
+    console.log(this.state.info);
+    if (!this.is_authenticated()) {
+      return <Redirect to="/error" />;
+    }
+    return (
+      <div>
+        <Navbar cookies={this.props.cookies} />
         <div className="restaurateur-page-2">
           <div className="container">
             <div className="row">
@@ -125,14 +145,9 @@ class RestaurateurPage2 extends Component {
             </div>
           </div>
         </div>
+      </div>
       );
     }
-    else{
-      return (
-        <Redirect to = "/error"></Redirect>
-      )
-    }
-  }
 }
 
 export default withRouter(RestaurateurPage2);
