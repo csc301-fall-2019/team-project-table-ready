@@ -9,6 +9,7 @@ const { ObjectID } = require("mongodb");
 const User = require("./models/user.js");
 const Restaurant = require("./models/Restaurant.js");
 const MenuItem = require("./models/MenuItem.js");
+const Waitlist = require("./models/waitlist.js")
 
 /* Use statements for the server */
 app.use(express.static("public"));
@@ -215,7 +216,7 @@ app.post("/waitlist/newWaitlist", (req, res) => {
     })
     .catch(err => {
       log(err);
-      res.send({ code: 404, error });
+      res.send({ code: 404, err});
     });
 });
 
