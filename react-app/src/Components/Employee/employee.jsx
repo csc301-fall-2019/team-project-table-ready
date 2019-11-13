@@ -254,6 +254,7 @@ class Employee extends Component {
     };
   }
   fetch_data = () => {
+    console.log(this.state.employee_obj)
     let data;
     const header = {
       headers: {
