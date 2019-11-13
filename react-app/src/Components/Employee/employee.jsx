@@ -249,6 +249,7 @@ class Employee extends Component {
       reservations_color:initial_color,
       user_obj: 0,
       changed: false,
+      employee_obj: this.props.cookies.cookies.cur_user,
       modal_show: false
     };
   }
@@ -538,6 +539,8 @@ class Employee extends Component {
             <button id = "date-confirm" onClick={()=>this.filter_date()}>Confirm</button>
             <button id = "date-confirm" onClick={()=>this.setModalState(true)}>Add Reservation</button>
           </div>
+          <p>Current user: </p>
+          <p>Restaurants working for: </p>
           <CardColumns id = "content-wrapper">
             {
               this.state.items.map((item,index) => (

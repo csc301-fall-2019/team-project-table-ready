@@ -51,6 +51,11 @@ const RestaurantSchema = new Schema({
         type:String,
         required:false
     }
+    reservations:{
+        type: Array,
+        required: false,
+        default: []
+    }
 });
 
 
