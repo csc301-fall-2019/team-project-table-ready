@@ -251,18 +251,91 @@ class Employee extends Component {
       user_obj: 0,
       changed: false,
       employee_obj: this.props.cookies.cookies.cur_user,
+      rest_obj: null,
       modal_show: false
     };
   }
+  create_waitlist = (new_wl) => {
+    const header = {
+      headers: {'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      }
+    };  
+    let id;
+    axios.post('/waitlist/newWaitlist', {
+      id: new_wl.id,
+      name: new_wl.name,
+      people: new_wl.people,
+      date_of_arrival: new_wl.date_of_arrival,
+      estimated_time: new_wl.estimated_time
+    },header)
+      .then((response) => {
+          id = response.data
+      }, (error) => {
+          console.log(error);
+      });
+    axios.post('/restaurant/updateReservation', {
+      _id: this.state.rest_obj._id,
+      reservations: [...this.state.rest_obj.reservations, id]
+    })
+      .then((response) => {
+        console.log(response)
+      })
+      .catch(function (error){
+        console.log(error);
+      })
+  }
+  update_rest_waitlist = (rest_id) => {
+    const header = {
+      headers: {'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      }
+    };  
+    if(this.state.employee_obj.workFor === undefined){
+      window.location.href = '/error'
+    }
+    else{
+      axios.post("/restaurant/findRestaurant", {_id: this.state.employee_obj.workFor})
+        .then(res => this.setState({rest_obj: res.data[0]}))
+        .catch(function (error){
+          console.log(error);
+      })
+      console.log(this.state.rest_obj)
+      if(this.state.rest_obj != undefined){
+        this.state.rest_obj.reservations.forEach(element => {
+          axios.post("/waitlist/getWaitlistById",{_id: element})
+            .then(res => console.log(res.data))
+            .catch(function (error){
+              console.log(error);
+            })
+        });
+      }
+
+      // axios.put('/updateRestWaitlist/' + rest_id, {
+      //   id: new_wl.id,
+      //   name: new_wl.name,
+      //   people: new_wl.people,
+      //   date_of_arrival: new_wl.date_of_arrival,
+      //   estimated_time: new_wl.estimated_time
+      // },header)
+      //   .then((response) => {
+      //       console.log(response);
+      //   }, (error) => {
+      //       console.log(error);
+      //   });
+    }
+
+  }
   fetch_data = () => {
-    console.log(this.state.employee_obj)
-    let data;
+    
     const header = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
       }
     }; 
+    console.log(this.state.employee_obj)
+    this.update_rest_waitlist(this.state.employee_obj.workFor)
     axios.post('/waitlist/getWaitlist')
       .then(res => this.setState({all_seats: res.data}))
       .catch(function (error) {
@@ -357,7 +430,6 @@ class Employee extends Component {
   remove_reservation_from_items = (index) => {
     this.delete_data(this.state.items[index])
     this.setState({
-      //TODO: Backend handle
       items: this.state.items.filter(i => i.id != this.state.items[index].id)
     });
   };
@@ -454,24 +526,8 @@ class Employee extends Component {
     }
     this.filter_date()
     this.setModalState(false)
-    const header = {
-      headers: {'Accept': 'application/json',
-          'Content-Type': 'application/json'
-      }
-    };  
+    this.create_waitlist(new_wl)
 
-    axios.post('/waitlist/newWaitlist', {
-      id: new_wl.id,
-      name: new_wl.name,
-      people: new_wl.people,
-      date_of_arrival: new_wl.date_of_arrival,
-      estimated_time: new_wl.estimated_time
-    },header)
-      .then((response) => {
-          console.log(response);
-      }, (error) => {
-          console.log(error);
-      });
   }
   render_button = (index) =>{
     if(this.state.items[index].reserved){
