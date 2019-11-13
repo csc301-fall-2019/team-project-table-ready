@@ -25,7 +25,7 @@ function App() {
         <Switch>
           <Route
             exact path="/"
-            render={() => (<RestaurateurPage cookies={{cookies, setCookie, removeCookie}}/>)}
+            render={() => (<SignIn cookies={{cookies, setCookie, removeCookie}}/>)}
             />
           <Route
             exact path="/SignIn"

@@ -138,6 +138,7 @@ app.get('/api/restaurants', (req, res) => {
   });
 });
 
+
 app.delete('/api/users/:id', (req, res) => {
   const id = req.params.id;
   User.findByIdAndDelete(id)

@@ -12,7 +12,7 @@ function UserRow(props) {
 
     return (
         <tr key={user._id.toString()}>
-            <th scope="row"><Link to={userLink}>{user.username}</Link></th>
+            <th scope="row"><Link to={getUserLink(userLink)}>{user.username}</Link></th>
             <td><Link to={userLink}>{user.name}</Link></td>
             {/*<td>{user.registered}</td>*/}
             <td>{user.tel}</td>
@@ -23,6 +23,18 @@ function UserRow(props) {
             </Button></td>
         </tr>
     );
+}
+
+function getUserLink(user) {
+    let res = `/${user._id}`;
+
+    if (user.accountType === "SuperAdmin") {
+        res = "/sysadmin" + res;
+    } else if (user.accountType === "Admin") {
+        res = "/restaurateur" + res;
+    } else if (user.accountType === "Employee")
+        res = "/employee" + res;
+    return res;
 }
 
 class Users extends Component {
