@@ -15,6 +15,7 @@ import Draggable, {DraggableCore} from 'react-draggable';
 import VerticalModal from './verticalModal';
 import axios from 'axios';
 import HeaderSubHeader from "semantic-ui-react/dist/commonjs/elements/Header/HeaderSubheader";
+import {Redirect} from 'react-router-dom'
 // fake data generator
 
 // a little function to help us with reordering the result
@@ -561,7 +562,7 @@ class Employee extends Component {
               </span>
         </Menu>
         <div id = "page-wrap">
-        <Navbar />
+          <Navbar cookies={this.props.cookies}/>
           <div id = "cal" style={{height: '80px'}}>
             <DatePicker onChange={(value)=>this.showdate(value)} showDefaultIcon></DatePicker>
             <button id = "date-confirm" onClick={()=>this.filter_date()}>Confirm</button>

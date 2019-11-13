@@ -70,27 +70,23 @@ app.post("/restaurant/newRestaurant", (req, res) => {
       log(err);
       res.send({ code: 404, err });
     });
-
 });
 
 app.post("/restaurant/updateRestaurant", (req, res) => {
-  Restaurant.
-  findByIdAndUpdate( req.body._id, {
-
+  Restaurant.findByIdAndUpdate(req.body._id, {
     name: req.body.name,
     phoneNumber: req.body.phoneNumber,
     location: req.body.location,
     Cuisine: req.body.cuisine,
     operationHour: req.body.hours
-
   })
-      .then(restaurant => {
-        res.send("restaurant " + restaurant.name + " updated to database");
-      })
-      .catch(err => {
-        log(err);
-        res.send({ code: 404, err });
-      });
+    .then(restaurant => {
+      res.send("restaurant " + restaurant.name + " updated to database");
+    })
+    .catch(err => {
+      log(err);
+      res.send({ code: 404, err });
+    });
 });
 
 app.post("/restaurant/newMenuItem", (req, res) => {
@@ -142,26 +138,23 @@ app.post("/restaurant/findEmployeesByRestaurant", (req, res) => {
     }
   );
 
-
   // return new Promise((resolve, reject) => {
   //
   // });
 });
 
-  app.post("/restaurant/updateDressCode", (req, res) => {
-  Restaurant.findByIdAndUpdate( req.body._id, {
-
+app.post("/restaurant/updateDressCode", (req, res) => {
+  Restaurant.findByIdAndUpdate(req.body._id, {
     DressCode: req.body.dressCode
-
   }).then(
-      user => {
-        res.send(user);
-      },
-      error => {
-        res.send({code: 404, error});
-      }
+    user => {
+      res.send(user);
+    },
+    error => {
+      res.send({ code: 404, error });
+    }
   );
-})
+});
 
 app.post("/restaurant/add_employee", (req, res) => {
   // res.send("1000");
@@ -169,41 +162,28 @@ app.post("/restaurant/add_employee", (req, res) => {
   const restaurant_id = req.body.restaurant_id;
   console.log("username:", username);
   if (username && restaurant_id) {
-    User.findOne({ username: username })
-      .then(function(user) {
-        if (!user) {
-          return;
-        }
-        console.log(user.workFor);
-        console.log(restaurant_id);
-        if (!user.workFor.includes(restaurant_id)) {
-          user.workFor.push(restaurant_id);
-        }
-        user.save();
-        res.send(user);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    User.findOneAndUpdate(
+      { username: username },
+      { workFor: restaurant_id }
+    ).then(user => {});
   }
 });
 
 app.post("/restaurant/delete_employee", (req, res) => {
-  const restaurant_id = req.body.restaurant_id;
+  // const restaurant_id = req.body.restaurant_id;
   const user_id = req.body.user_id;
-  console.log(restaurant_id);
-  console.log(user_id);
-  User.findById(user_id, (err, user) => {
-    if (err) {
-      console.log(err);
-    } else {
-      user.workFor = user.workFor.filter(
-        restaurant => restaurant !== restaurant_id
-      );
-      user.save();
+  console.log("\n\n\n/restaurant/delete_employee\n\n\n");
+  if (user_id) {
+    User.findByIdAndUpdate(user_id, { workFor: "" }, (err, user) => {
+      if (err) {
+        console.log(err);
+        res.send(err);
+      }
+      console.log("user deleted from restaurant");
+      console.log(user);
       res.send(user);
-    }
-  });
+    });
+  }
 });
 
 app.post("/restaurant/findRestaurant", (req, res) => {
@@ -278,11 +258,7 @@ app.delete("/api/users/:id", (req, res) => {
   const id = req.params.id;
   User.findByIdAndDelete(id)
     .then(() => {
-<<<<<<< HEAD
       res.send('User ' + id + ' deleted.');
-=======
-      res.send("User " + id + " deleted.");
->>>>>>> ce741395827787756c850e76dd11d0cbe350e61c
     })
     .catch(err => {
       res.status(400).json("Error: " + err);
@@ -293,18 +269,13 @@ app.delete("/api/restaurants/:id", (req, res) => {
   const id = req.params.id;
   Restaurant.findByIdAndDelete(id)
     .then(() => {
-<<<<<<< HEAD
       res.send('Restaurant ' + id + ' deleted.');
-=======
-      res.json("Restaurant " + id + " deleted.");
->>>>>>> ce741395827787756c850e76dd11d0cbe350e61c
     })
     .catch(err => {
       res.status(400).json("Error: " + err);
     });
 });
 
-<<<<<<< HEAD
 app.delete('/api/removeWaitlist/:id', (req, res) => {
   const id = req.params.id;
   console.log(id)
@@ -317,8 +288,6 @@ app.delete('/api/removeWaitlist/:id', (req, res) => {
     });  
 })
 
-=======
->>>>>>> ce741395827787756c850e76dd11d0cbe350e61c
 app.get("/user/info", (req, res) => {
   User.find()
     .then(users => res.json(users))
