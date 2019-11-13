@@ -37,7 +37,7 @@ class RestaurateurPage extends Component {
 
   is_authenticated = () => {
     const cur_user = this.props.cookies.cookies.cur_user;
-    if (cur_user.accountType != "Employee") {
+    if (cur_user.accountType !== "Employee") {
       return true;
     }
     return false;

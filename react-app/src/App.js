@@ -9,16 +9,15 @@ import RestaurateurPage from "./Components/Restaurateur/RestaurateurPage";
 import RestaurateurPage2 from "./Components/Restaurateur/RestaurateurPage2";
 import Dashboard from "./Components/Restaurateur/Dashboard";
 import Admin from "./Components/Admin/Admin";
-import Employee from "./Components/Employee/employee"
+import Employee from "./Components/Employee/employee";
 import "./App.scss";
-import { withCookies, useCookies} from 'react-cookie';
-import Customers from "./Components/Customers";
-import NotFound from './Components/page_not_found/page_not_found'
+import { withCookies, useCookies } from "react-cookie";
+import NotFound from "./Components/page_not_found/page_not_found";
 import NewRestaurant from "./Components/Restaurateur/NewRestaurant";
 import AddNewMenuItem from "./Components/Restaurateur/AddNewMenuItem";
 
 function App() {
-  const [cookies, setCookie, removeCookie] = useCookies(['cur_user']);
+  const [cookies, setCookie, removeCookie] = useCookies(["cur_user"]);
 
   return (
     <div className="App">
@@ -41,9 +40,12 @@ function App() {
             )}
           />
           <Route
-            exact path="/SignUp"
-            render={() => (<SignUp cookies={{cookies, setCookie, removeCookie}}/>)}
-            />
+            exact
+            path="/SignUp"
+            render={() => (
+              <SignUp cookies={{ cookies, setCookie, removeCookie }} />
+            )}
+          />
           <Route path="/error" component={NotFound} />
           <Route
             exact
@@ -85,8 +87,11 @@ function App() {
             )}
           />
           <Route
-              exact path="/employee"
-              render={() => (<Employee cookies={{cookies, setCookie, removeCookie}}/>)}
+            exact
+            path="/employee"
+            render={() => (
+              <Employee cookies={{ cookies, setCookie, removeCookie }} />
+            )}
           />
 
           <Route
