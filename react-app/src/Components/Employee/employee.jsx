@@ -255,6 +255,9 @@ class Employee extends Component {
       modal_show: false
     };
   }
+  componentDidMount(){
+    this.fetch_data()
+  }
   create_waitlist = (new_wl) => {
     const header = {
       headers: {'Accept': 'application/json',
@@ -270,20 +273,20 @@ class Employee extends Component {
       estimated_time: new_wl.estimated_time
     },header)
       .then((response) => {
-          id = response.data
-      }, (error) => {
-          console.log(error);
-      });
-    axios.post('/restaurant/updateReservation', {
-      _id: this.state.rest_obj._id,
-      reservations: [...this.state.rest_obj.reservations, id]
-    })
-      .then((response) => {
-        console.log(response)
+        id = response.data
+        axios.post('/restaurant/updateReservation', {
+          _id: this.state.rest_obj._id,
+          reservations: [...this.state.rest_obj.reservations, id]
+        })
+          .then((response) => {
+            console.log(response)
+          })
+          .catch(function (error){
+            console.log(error);
+          })
       })
-      .catch(function (error){
-        console.log(error);
-      })
+    
+
   }
   update_rest_waitlist = (rest_id) => {
     const header = {
