@@ -3,7 +3,6 @@ import "../../Stylesheets/restaurateur_page.scss";
 import RestaurantListItem from "./RestaurantListItem";
 import { Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
-import {Redirect} from 'react-router-dom'
 import Navbar from "../Navbar";
 import axios from "axios";
 

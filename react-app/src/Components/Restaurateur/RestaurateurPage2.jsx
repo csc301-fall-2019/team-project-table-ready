@@ -9,7 +9,6 @@ import Pay from "./Pay";
 import Menu from "./Menu";
 import Navbar from "../Navbar";
 import DressCode from "./DressCode";
-import {Redirect} from 'react-router-dom'
 import uid from "uid";
 import axios from "axios";
 import EditRestaurant from "./EditRestaurant";

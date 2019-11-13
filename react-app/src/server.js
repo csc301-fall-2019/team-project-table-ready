@@ -322,6 +322,16 @@ app.put("/updateWaitlist/:id", (req, res) => {
       res.status(400).json('Error: ' + err);
     }); 
 })
+
+app.put("/updateRestWaitlist/:id", (req, res) => {
+  Restaurant.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    .then(() => {
+      res.send("Rest Waitlist " + id + " updated")
+    })
+    .catch(err => {
+      res.status(400).json('Error: ' + err);
+    }); 
+})
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   log("Listening on port 5000...");
