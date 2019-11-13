@@ -294,7 +294,7 @@ class Employee extends Component {
           'Content-Type': 'application/json'
       }
     };  
-    if(this.state.employee_obj.workFor === undefined){
+    if(this.state.employee_obj.workFor === ""){
       window.location.href = '/error'
     }
     else{
@@ -305,13 +305,28 @@ class Employee extends Component {
       })
       console.log(this.state.rest_obj)
       if(this.state.rest_obj != undefined){
+        this.setState({
+          all_seats: []
+        })
         this.state.rest_obj.reservations.forEach(element => {
           axios.post("/waitlist/getWaitlistById",{_id: element})
-            .then(res => console.log(res.data))
+            .then((res) => {
+              console.log(res.data)
+              
+              this.setState({
+                all_seats: [...this.state.all_seats, res.data[0]]
+              })
+              this.setState({
+                items: this.state.all_seats.filter(
+                  value => value.date_of_arrival == this.state.current_date
+                ) 
+              })
+            })
             .catch(function (error){
               console.log(error);
             })
         });
+      console.log(this.state.all_seats)
       }
 
       // axios.put('/updateRestWaitlist/' + rest_id, {
@@ -338,12 +353,20 @@ class Employee extends Component {
       }
     }; 
     console.log(this.state.employee_obj)
+    
     this.update_rest_waitlist(this.state.employee_obj.workFor)
-    axios.post('/waitlist/getWaitlist')
-      .then(res => this.setState({all_seats: res.data}))
-      .catch(function (error) {
-        console.log(error);
-      });
+    // axios.post('/waitlist/getWaitlist')
+    //   .then((res) => {
+    //     this.setState({all_seats: res.data})
+    //     this.setState({
+    //       items: this.state.all_seats.filter(
+    //         value => value.date_of_arrival == this.state.current_date
+    //       )
+    //     });
+    //     })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
   }
   delete_data = (data) => {
     const header = {
@@ -510,12 +533,7 @@ class Employee extends Component {
   };
   filter_date = () => {
     this.fetch_data()
-    console.log(this.state.all_seats)
-    this.setState({
-      items: this.state.all_seats.filter(
-        value => value.date_of_arrival == this.state.current_date
-      )
-    });
+    
   };
   setModalState = state => {
     this.setState({
