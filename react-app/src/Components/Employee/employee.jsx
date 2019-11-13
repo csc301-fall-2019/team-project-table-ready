@@ -253,144 +253,159 @@ class Employee extends Component {
     };
   }
   fetch_data = () => {
-    fetch('http://localhost:3000/waitlist/getWaitlist', {
-      method: 'POST',
+    let data;
+    const header = {
       headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json"
       }
-    }).then(res => res.json())
-      .then(waitlists => this.setState({all_seats: waitlists}))
-        .catch(err => {
-            console.log(400);
+    };
+    axios
+      .post("/waitlist/getWaitlist", {}, header)
+      .then(res => this.setState({ all_seats: res.data }))
+      .catch(function(error) {
+        console.log(error);
       });
-  }
-    
+  };
 
-  getList = (id) => this.state[this.idtoList[id]];
+  getList = id => this.state[this.idtoList[id]];
 
   handleChange = () => {
-    this.setState({checkedG:!this.state.checkedG})
+    this.setState({ checkedG: !this.state.checkedG });
   };
-  handleStart = (index) => {
-    let tmp = this.state.to_be_reserved[index]
-    this.setState({user_obj:tmp})
-    this.setState({draggin:true})
-  }
-  handleStop = (index) => {
-    this.setOccupied()
-    this.state.items[index].reserved = true
-    if(this.state.changed){
-      let tmp = []
-      this.state.to_be_reserved.forEach((item) => {
-        if(item == this.state.user_obj){
-          tmp.push(null)
+  handleStart = index => {
+    let tmp = this.state.to_be_reserved[index];
+    this.setState({ user_obj: tmp });
+    this.setState({ draggin: true });
+  };
+  handleStop = index => {
+    this.setOccupied();
+    const i = this.state.items.indexOf(this.state.to_be_reserved[index]);
+    this.state.items[i].reserved = true;
+    if (this.state.changed) {
+      let tmp = [];
+      this.state.to_be_reserved.forEach(item => {
+        if (item == this.state.user_obj) {
+          tmp.push(null);
+        } else {
+          tmp.push(item);
         }
-        else{
-          tmp.push(item)
-        }
-      })
+      });
       this.setState({
         to_be_reserved: tmp,
         changed: false
-      })
+      });
     }
-  }
+  };
   setOccupied = () => {
-    for(let i = 0; i < this.state.reservations_color.length; i++){
-      if(this.state.reservations_color[i] == "green"){
-        this.state.all_table[i].table_occupied = true
+    for (let i = 0; i < this.state.reservations_color.length; i++) {
+      if (this.state.reservations_color[i] == "green") {
+        this.state.all_table[i].table_occupied = true;
       }
     }
-  }
-  change_menu_state = (index) => {
-    this.setState({menu_open:!this.state.menu_open})
+  };
+  change_menu_state = index => {
+    this.setState({ menu_open: !this.state.menu_open });
     let in_list = false;
     this.state.to_be_reserved.forEach(element => {
-      if(element == this.state.items[index]){
+      if (element == this.state.items[index]) {
         in_list = true;
       }
     });
-    if(in_list == false){
-      this.state.to_be_reserved.push(this.state.items[index])
-      this.setState({to_be_reserved:this.state.to_be_reserved})
+    if (in_list == false) {
+      this.state.to_be_reserved.push(this.state.items[index]);
+      this.setState({ to_be_reserved: this.state.to_be_reserved });
     }
-
-  }
-  remove_reservation_from_items = (index) => {
+  };
+  remove_reservation_from_items = index => {
     this.setState({
       //TODO: Backend handle
-      items: this.state.items.filter(i=>i.id != this.state.items[index].id)
-    })
-  }
-  info = (e) => {
+      items: this.state.items.filter(i => i.id != this.state.items[index].id)
+    });
+  };
+  info = e => {
     // console.log("hi")
-  }
-  removefocus = (e) => {
-    e.preventDefault()
-  }
-  /* change color of card */ 
-  checkcapacity = (index) => {
+  };
+  removefocus = e => {
+    e.preventDefault();
+  };
+  /* change color of card */
+
+  checkcapacity = index => {
     // const cur_table = document.getElementById(`Table-${index}`)
     // this.setState({current_table:cur_table})
-    const cur_table_obj = this.state.all_table[index]
-    if (this.state.draggin){
-      if (cur_table_obj.table_capacity >= this.state.user_obj.people && cur_table_obj.table_occupied == false){
-        this.state.reservations_color[index] = "green"
-        this.setState({reservations_color:this.state.reservations_color, changed: true})
+    const cur_table_obj = this.state.all_table[index];
+    if (this.state.draggin) {
+      if (
+        cur_table_obj.table_capacity >= this.state.user_obj.people &&
+        cur_table_obj.table_occupied == false
+      ) {
+        this.state.reservations_color[index] = "green";
+        this.setState({
+          reservations_color: this.state.reservations_color,
+          changed: true
+        });
+      } else if (cur_table_obj.table_occupied == false) {
+        this.state.reservations_color[index] = "red";
+        this.setState({
+          reservations_color: this.state.reservations_color,
+          changed: false
+        });
       }
-      else if(cur_table_obj.table_occupied == false){
-        this.state.reservations_color[index] = "red"
-        this.setState({reservations_color:this.state.reservations_color, changed: false})
-      }
     }
-  }
-  resumecard = (index) => {
-    if(this.state.all_table[index].table_occupied == false){
-      this.state.reservations_color[index] = "#f8f9fa"
-      this.setState({reservations_color:this.state.reservations_color, changed: false})
+  };
+  resumecard = index => {
+    if (this.state.all_table[index].table_occupied == false) {
+      this.state.reservations_color[index] = "#f8f9fa";
+      this.setState({
+        reservations_color: this.state.reservations_color,
+        changed: false
+      });
     }
-
-  }
-  showdate = (value) => {
-    const year = value.$y
-    const month = (value.$M) + 1
-    const day = (value.$D)
-    const date = `${year}/${month}/${day}`
-    this.setState({current_date:date})
-  }
-  handleStateChange = (state) => {
-    this.setState({menu_open:state.isOpen})
-  }
-  handleMouseOver = (index) => {
-    if(this.state.draggin){
-      this.checkcapacity(index)
+  };
+  showdate = value => {
+    const year = value.$y;
+    const month = value.$M + 1;
+    const day = value.$D;
+    const date = `${year}/${month}/${day}`;
+    this.setState({ current_date: date });
+  };
+  handleStateChange = state => {
+    this.setState({ menu_open: state.isOpen });
+  };
+  handleMouseOver = index => {
+    if (this.state.draggin) {
+      this.checkcapacity(index);
     }
-  }
-  empty_seats = (index) => {
-    if(this.state.all_table[index].table_occupied == true){
-      this.state.all_table[index].table_occupied = false
-      this.resumecard(index)
+  };
+  empty_seats = index => {
+    if (this.state.all_table[index].table_occupied == true) {
+      this.state.all_table[index].table_occupied = false;
+      this.resumecard(index);
     }
-  }
-  remove_from_reserved = (index) =>{
+  };
+  remove_from_reserved = index => {
     this.setState({
       //TODO: Backend handle
-      to_be_reserved: this.state.to_be_reserved.filter(i=>i.id != this.state.to_be_reserved[index].id)
-    })
-  }
+      to_be_reserved: this.state.to_be_reserved.filter(
+        i => i.id != this.state.to_be_reserved[index].id
+      )
+    });
+  };
   filter_date = () => {
-    this.fetch_data()
+    this.fetch_data();
     this.setState({
-      items: this.state.all_seats.filter((value) => value.date_of_arrival == this.state.current_date)
-    })
-  }
-  setModalState = (state) => {
+      items: this.state.all_seats.filter(
+        value => value.date_of_arrival == this.state.current_date
+      )
+    });
+  };
+  setModalState = state => {
     this.setState({
       modal_show: state
-    })
-  }
-  add_reservation = (name, ppl_num, date, time) =>{
+    });
+  };
+  add_reservation = (name, ppl_num, date, time) => {
     const new_wl = {
       id: this.state.all_seats.length + 1,
       Name: name,

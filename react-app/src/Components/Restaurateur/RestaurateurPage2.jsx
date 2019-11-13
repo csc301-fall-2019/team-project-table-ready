@@ -1,46 +1,78 @@
-import React, { Component } from "react";
-import EmployeeListItem from "./EmployeeListItem";
+import React, {Component} from "react";
+import {withRouter} from "react-router-dom";
+// import EmployeeListItem from "./EmployeeListItem";
 import "../../Stylesheets/restaurateur_page_2.scss";
-import GeneralInfo from "./GeneralInfo";
+// import GeneralInfo from "./GeneralInfo";
 import Employees from "./Employees";
 import Pay from "./Pay";
 import Menu from "./Menu";
+import Navbar from "../Navbar";
 import DressCode from "./DressCode";
 import {Redirect} from 'react-router-dom'
+import uid from "uid";
+import axios from "axios";
+import EditRestaurant from "./EditRestaurant";
+
+const queryString = require("query-string");
 
 class RestaurateurPage2 extends Component {
-  state = {
-    curState :<Employees />,
-    functions:[
-      {
-        id:1,
-        title: 'Employees',
-        model: <Employees />
-      },
-      {
-        id:2,
-        title: 'Dress Code',
-        model: <DressCode />
-      },
-      {
-        id:3,
-        title: 'Menu',
-        model: <Menu />
-      },
-      {
-        id:4,
-        title: 'Payment',
-        model: <Pay />
-      }
-    ]
+    state = {
+        info: [],
+        curState: <Employees res_id={this.props.match.params.id}/>,
+        functions: [
+            {
+                id: 1,
+                title: "Employees",
+                model: <Employees res_id={this.props.match.params.id}/>
+            },
+            {
+                id: 2,
+                title: "Dress Code",
+                model: <DressCode id={this.props.match.params.id}/>
+            },
+            {
+                id: 3,
+                title: "Menu",
+                model: <Menu/>
+            },
+            {
+                id: 4,
+                title: "Payment",
+                model: <Pay/>
+            }
+        ]
+    };
+    componentDidMount() {
+      const header = {
+          headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json"
+          }
+      };
+      axios
+          .post(
+              "/restaurant/findRestaurant",
+              {
+                  _id: this.props.match.params.id
+              },
+              header
+          )
 
-  };
-  showComponent = (component) =>{
-
-    this.setState({
-      curState : component
-    })
+          .then(restaurant =>
+              this.setState({info: restaurant.data[0]}, () =>
+                  console.log("Customers fetched...", this.state.info)
+              )
+          )
+          .catch(err => {
+              console.log(400);
+          });
   }
+
+  showComponent = component => {
+      this.setState({
+          curState: component
+      });
+  };
   is_authenticated = () => {
     const cur_user = this.props.cookies.cookies.cur_user
     if (cur_user.accountType != "Employee"){
@@ -103,4 +135,4 @@ class RestaurateurPage2 extends Component {
   }
 }
 
-export default RestaurateurPage2;
+export default withRouter(RestaurateurPage2);
