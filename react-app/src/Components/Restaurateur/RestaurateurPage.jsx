@@ -123,68 +123,6 @@ class RestaurateurPage extends Component {
                 </ul>
               </div>
   
-              <div className="col-md-9">
-                <h2 style={{display:'inline'}}>Your Restaurants</h2>
-                <Link to="/addNewRestaurant"><button className={"addNewButton"}> Add New </button></Link>
-                <div className="restaurants-display">
-                  <div className="list-group">
-                    <RestaurantListItem
-                      name="Restaurant Name"
-                      address="788 Creek Lane Simpsonville, SC 29680"
-                      telephone="123-456-7890"
-                      image={
-                        process.env.PUBLIC_URL +
-                        "/images/restaurant_images/restaurant1.jpeg"
-                      }
-                    />
-                    <RestaurantListItem
-                      name="Restaurant Name"
-                      address="788 Creek Lane Simpsonville, SC 29680"
-                      telephone="123-456-7890"
-                      image={
-                        process.env.PUBLIC_URL +
-                        "/images/restaurant_images/restaurant2.jpeg"
-                      }
-                    />
-                    <RestaurantListItem
-                      name="Restaurant Name"
-                      address="788 Creek Lane Simpsonville, SC 29680"
-                      telephone="123-456-7890"
-                      image={
-                        process.env.PUBLIC_URL +
-                        "/images/restaurant_images/restaurant3.jpeg"
-                      }
-                    />
-                    <RestaurantListItem
-                      name="Restaurant Name"
-                      address="788 Creek Lane Simpsonville, SC 29680"
-                      telephone="123-456-7890"
-                      image={
-                        process.env.PUBLIC_URL +
-                        "/images/restaurant_images/restaurant1.jpeg"
-                      }
-                    />
-                    <RestaurantListItem
-                      name="Restaurant Name"
-                      address="788 Creek Lane Simpsonville, SC 29680"
-                      telephone="123-456-7890"
-                      image={
-                        process.env.PUBLIC_URL +
-                        "/images/restaurant_images/restaurant2.jpeg"
-                      }
-                    />
-                    <RestaurantListItem
-                      name="Restaurant Name"
-                      address="788 Creek Lane Simpsonville, SC 29680"
-                      telephone="123-456-7890"
-                      image={
-                        process.env.PUBLIC_URL +
-                        "/images/restaurant_images/restaurant3.jpeg"
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
