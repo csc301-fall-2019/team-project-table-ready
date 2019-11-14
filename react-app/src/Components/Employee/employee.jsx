@@ -278,9 +278,7 @@ class Employee extends Component {
           _id: this.state.rest_obj._id,
           reservations: [...this.state.rest_obj.reservations, id]
         })
-          .then((response) => {
-            console.log(response)
-          })
+          .then(this.filter_date())
           .catch(function (error){
             console.log(error);
           })
@@ -294,38 +292,39 @@ class Employee extends Component {
           'Content-Type': 'application/json'
       }
     };  
-    if(this.state.employee_obj.workFor === ""){
+    if(rest_id === ""){
       window.location.href = '/error'
     }
     else{
-      axios.post("/restaurant/findRestaurant", {_id: this.state.employee_obj.workFor})
+      axios.post("/restaurant/findRestaurant", {_id: rest_id})
         .then(res => this.setState({rest_obj: res.data[0]}))
+        .then(() => {
+          if(this.state.rest_obj != undefined){
+            this.setState({
+              all_seats: []
+            })
+            this.state.rest_obj.reservations.forEach(element => {
+              axios.post("/waitlist/getWaitlistById",{_id: element})
+                .then((res) => {
+                  
+                  this.setState({
+                    all_seats: [...this.state.all_seats, res.data[0]]
+                  })
+                  this.setState({
+                    items: this.state.all_seats.filter(
+                      value => value.date_of_arrival == this.state.current_date
+                    ) 
+                  })
+                })
+                .catch(function (error){
+                  console.log(error);
+                })
+            });
+        }})
         .catch(function (error){
           console.log(error);
       })
-      console.log(this.state.rest_obj)
-      if(this.state.rest_obj != undefined){
-        this.setState({
-          all_seats: []
-        })
-        this.state.rest_obj.reservations.forEach(element => {
-          axios.post("/waitlist/getWaitlistById",{_id: element})
-            .then((res) => {
-              console.log(res.data)
-              
-              this.setState({
-                all_seats: [...this.state.all_seats, res.data[0]]
-              })
-              this.setState({
-                items: this.state.all_seats.filter(
-                  value => value.date_of_arrival == this.state.current_date
-                ) 
-              })
-            })
-            .catch(function (error){
-              console.log(error);
-            })
-        });
+      
       console.log(this.state.all_seats)
       }
 
@@ -341,7 +340,6 @@ class Employee extends Component {
       //   }, (error) => {
       //       console.log(error);
       //   });
-    }
 
   }
   fetch_data = () => {
@@ -352,21 +350,8 @@ class Employee extends Component {
         "Content-Type": "application/json"
       }
     }; 
-    console.log(this.state.employee_obj)
     
     this.update_rest_waitlist(this.state.employee_obj.workFor)
-    // axios.post('/waitlist/getWaitlist')
-    //   .then((res) => {
-    //     this.setState({all_seats: res.data})
-    //     this.setState({
-    //       items: this.state.all_seats.filter(
-    //         value => value.date_of_arrival == this.state.current_date
-    //       )
-    //     });
-    //     })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
   }
   delete_data = (data) => {
     const header = {
@@ -380,6 +365,16 @@ class Employee extends Component {
     }, (error) => {
       console.log(error);
     });
+    axios.post('/restaurant/updateReservation', {
+      _id: this.state.rest_obj._id,
+      reservations: this.state.rest_obj.reservations.filter((value) => value != data._id)
+    })
+      .then((response) => {
+        console.log(response)
+      })
+      .catch(function (error){
+        console.log(error);
+      })
   }
   update_data = (data) => {
     const header = {
@@ -533,7 +528,6 @@ class Employee extends Component {
   };
   filter_date = () => {
     this.fetch_data()
-    
   };
   setModalState = state => {
     this.setState({
@@ -548,17 +542,17 @@ class Employee extends Component {
       date_of_arrival: date,
       estimated_time: time
     }
-    this.filter_date()
+    
     this.setModalState(false)
     this.create_waitlist(new_wl)
-
+    
   }
   render_button = (index) =>{
     if(this.state.items[index].reserved){
       return null
     }
     else{
-      return <button class="accept-button" onClick = {(e) => this.change_menu_state(index)} onMouseDown = {this.removefocus}><img src = "./images/restaurant_images/done-tick.png"></img></button>
+      return <button class="accept-button" onClick = {(e) => this.change_menu_state(index)} onMouseDown = {this.removefocus}><img src = {process.env.PUBLIC_URL + "/images/restaurant_images/done-tick.png"}></img></button>
     }
   }
 
@@ -580,31 +574,31 @@ class Employee extends Component {
         if(item!=null){
           draggables.push(
             <Draggable  onStart={() => this.handleStart(index)}  onStop={() => this.handleStop(index)}>
-                        <Card id = {`usercard-${index}`} draggable = "true" style={{backgroundColor:"#f8f9fa", width: '18rem' }}>
-                          <Card.Header className = "header-of-card">
-                            <div className = "pic-container">
-                              <strong>
-                                {item.name}
-                              </strong>
-                              <img className = "user-pic"src = "./images/restaurant_images/boy.png"></img>
-                            </div>
-                          </Card.Header>
-                          <Card.Body>
-                            <div>
-                              <span><img className = "info-png" src = "./images/restaurant_images/calendar.png"></img><span className = 
-                              "reservation_time">{item.estimated_time}</span><span className = "reservation_date">/{item.date_of_arrival}</span></span>
-                            </div>
-                            <div className = "num_people">
-                              <span><img className = "info-png" src = "./images/restaurant_images/avatar.png"></img><span className = "attendence">{item.people}</span></span>
-                            </div>
-                            <div className = "user_profile_holder">
-                              <div className = "check-container">  
-                                <button class="reject-button" onClick = {(e) => this.remove_from_reserved(index)} onMouseDown = {this.removefocus}><img src = "./images/restaurant_images/no-stopping.png"></img></button>
-                              </div>
-                            </div>
-                          </Card.Body>
-                        </Card>
-                      </Draggable>
+              <Card id = {`usercard-${index}`} draggable = "true" style={{backgroundColor:"#f8f9fa", width: '18rem' }}>
+                <Card.Header className = "header-of-card">
+                  <div className = "pic-container">
+                    <strong>
+                      {item.name}
+                    </strong>
+                    <img className = "user-pic"src = {process.env.PUBLIC_URL + "/images/restaurant_images/boy.png"}></img>
+                  </div>
+                </Card.Header>
+                <Card.Body>
+                  <div>
+                    <span><img className = "info-png" src = {process.env.PUBLIC_URL + "/images/restaurant_images/calendar.png"}></img><span className = 
+                    "reservation_time">{item.estimated_time}</span><span className = "reservation_date">/{item.date_of_arrival}</span></span>
+                  </div>
+                  <div className = "num_people">
+                    <span><img className = "info-png" src = {process.env.PUBLIC_URL + "/images/restaurant_images/avatar.png"}></img><span className = "attendence">{item.people}</span></span>
+                  </div>
+                  <div className = "user_profile_holder">
+                    <div className = "check-container">  
+                      <button class="reject-button" onClick = {(e) => this.remove_from_reserved(index)} onMouseDown = {this.removefocus}><img src = {process.env.PUBLIC_URL + "/images/restaurant_images/no-stopping.png"}></img></button>
+                    </div>
+                  </div>
+                </Card.Body>
+              </Card>
+              </Draggable>
           )
         }
         else{
@@ -632,7 +626,7 @@ class Employee extends Component {
                         <strong>
                           {`Table-${index+1}`}
                         </strong>
-                        <img className = "user-pic"src = "./images/restaurant_images/table.png"></img>
+                        <img className = "user-pic"src = {process.env.PUBLIC_URL + "/images/restaurant_images/table.png"}></img>
                       </div>
                     </Card.Header>
                     <Card.Body>
@@ -641,7 +635,7 @@ class Employee extends Component {
                       </div>
                       <div className = "user_profile_holder">
                         <div className = "check-container">  
-                            <button class="reject-button" onClick = {(e) => this.empty_seats(index)} onMouseDown = {this.removefocus}><img src = "./images/restaurant_images/no-stopping.png"></img></button>
+                            <button class="reject-button" onClick = {(e) => this.empty_seats(index)} onMouseDown = {this.removefocus}><img src = {process.env.PUBLIC_URL + "/images/restaurant_images/no-stopping.png"}></img></button>
                         </div>
                       </div>
                     </Card.Body>
@@ -668,25 +662,25 @@ class Employee extends Component {
                       <strong>
                         {item.name}
                       </strong>
-                      <img className = "user-pic"src = "./images/restaurant_images/boy.png"></img>
+                      <img className = "user-pic"src = {process.env.PUBLIC_URL + "/images/restaurant_images/boy.png"}></img>
                       
                     </div>
                   </Card.Header>
                   <Card.Body>
                     <div>
-                      <span><img className = "info-png" src = "./images/restaurant_images/calendar.png"></img><span className = 
+                      <span><img className = "info-png" src = {process.env.PUBLIC_URL + "/images/restaurant_images/calendar.png"}></img><span className = 
                       "reservation_time">{item.estimated_time}</span><span className = "reservation_date">/{item.date_of_arrival}</span></span>
                     </div>
                     <div className = "num_people">
-                      <span><img className = "info-png" src = "./images/restaurant_images/avatar.png"></img><span className = "attendence">{item.people}</span></span>
+                      <span><img className = "info-png" src = {process.env.PUBLIC_URL + "/images/restaurant_images/avatar.png"}></img><span className = "attendence">{item.people}</span></span>
                     </div>
                     <div>
-                    <span><img className = "info-png" src = "./images/restaurant_images/receptionist.png"></img><span className = "attendence">{item.reserved ? 'Reserved' : 'Not Reserved'}</span></span>
+                    <span><img className = "info-png" src = {process.env.PUBLIC_URL + "/images/restaurant_images/receptionist.png"}></img><span className = "attendence">{item.reserved ? 'Reserved' : 'Not Reserved'}</span></span>
                     </div>
                     <div className = "user_profile_holder">
                       <div className = "check-container">  
                           {this.render_button(index)}
-                          <button class="reject-button" onClick = {(e) => this.remove_reservation_from_items(index)} onMouseDown = {this.removefocus}><img src = "./images/restaurant_images/no-stopping.png"></img></button>
+                          <button class="reject-button" onClick = {(e) => this.remove_reservation_from_items(index)} onMouseDown = {this.removefocus}><img src = {process.env.PUBLIC_URL + "/images/restaurant_images/no-stopping.png"}></img></button>
                       </div>
                     </div>
                   </Card.Body>
