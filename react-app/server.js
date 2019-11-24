@@ -124,9 +124,10 @@ app.post("/restaurant/findMenuByRestaurant", (req, res) => {
   );
 });
 
-app.delete("/restaurant/deleteMenuItem", (req, res) => {
+app.delete("/restaurant/deleteMenuItem/?:id", (req, res) => {
   // const restaurant_id = req.body.restaurant_id;
-  const menu_id = req.body.menu_id;
+  const menu_id = req.params.id;
+  console.log("WAY",menu_id);
   if (menu_id) {
     MenuItem.findByIdAndDelete(menu_id).then(
       users => {
