@@ -124,11 +124,31 @@ app.post("/restaurant/findMenuByRestaurant", (req, res) => {
   );
 });
 
-app.post("/restaurant/deleteMenuItem", (req, res) => {
+app.delete("/restaurant/deleteMenuItem", (req, res) => {
   // const restaurant_id = req.body.restaurant_id;
   const menu_id = req.body.menu_id;
   if (menu_id) {
     MenuItem.findByIdAndDelete(menu_id).then(
+      users => {
+        res.send(users);
+      },
+      error => {
+        res.send({ code: 404, error });
+      }
+    );
+  }
+});
+
+app.put("/restaurant/EditMenuItem", (req, res) => {
+  // const restaurant_id = req.body.restaurant_id;
+  const id = req.body.id;
+  if (id) {
+    MenuItem.findByIdAndUpdate(id, {
+      name: req.body.name,
+      price: req.body.price,
+      ingredients: req.body.ingredients,
+      calories: req.body.calories
+    }).then(
       users => {
         res.send(users);
       },
@@ -249,7 +269,6 @@ app.post("/restaurant/findRestaurant", (req, res) => {
       num_reserv.forEach(element => {
         tmp.push(element);
       });
-      console.log(tmp);
       Waitlist.find({
         _id: { $in: tmp }
       })
@@ -401,7 +420,7 @@ app.get("/api/employee/:id", (req, res) => {
   });
 });
 
-// update the information of the user specified by the id.
+//  the information of the user specified by the id.
 app.put("/user/:id", (req, res) => {
   log("this body is: " + req.body.email);
   log("this body is: " + req.body.password);

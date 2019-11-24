@@ -47,7 +47,7 @@ class Menu extends Component {
       if (menuItem[i]._id === id) {
         menuItem.splice(i, 1);
         axios
-          .post("/restaurant/deleteMenuItem", {
+          .delete("/restaurant/deleteMenuItem", {
             restaurant_id: this.props.res_id,
             menu_id: id
           })
@@ -83,11 +83,13 @@ class Menu extends Component {
             return (
               <MenuItem
                 key={uid()}
+                res_id={this.props.res_id}
                 image={menuItem.image}
                 name={menuItem.name}
                 price={menuItem.price}
                 id={menuItem._id}
                 ingredients={menuItem.ingredients}
+                calories = {menuItem.calories}
                 deleteItem={this.deleteItem}
               />
             );

@@ -16,6 +16,7 @@ import { withCookies, useCookies } from "react-cookie";
 import NotFound from "./Components/page_not_found/404";
 import NewRestaurant from "./Components/Restaurateur/NewRestaurant";
 import AddNewMenuItem from "./Components/Restaurateur/AddNewMenuItem";
+import EditMenuItem from "./Components/Restaurateur/EditMenuItem";
 
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies(["cur_user"]);
@@ -90,6 +91,15 @@ function App() {
               <AddNewMenuItem cookies={{ cookies, setCookie, removeCookie }} />
             )}
           />
+
+          <Route
+            exact
+            path="/editMenuItem"
+            render={() => (
+              <EditMenuItem cookies={{ cookies, setCookie, removeCookie }} />
+            )}
+          />
+
           <Route
             exact
             path="/addNewRestaurant"
