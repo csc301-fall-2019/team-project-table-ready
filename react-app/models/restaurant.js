@@ -5,8 +5,8 @@ const mongoose = require("mongoose");
 // const TypeId = mongoose.Types.ObjectId;
 const Schema = mongoose.Schema;
 const { MongoClient, ObjectID } = require("mongodb");
+const MenuItem = require("./MenuItem.js");
 
-// Todo: Jiatao
 const RestaurantSchema = new Schema({
   owner: {
     type: String,
@@ -57,5 +57,28 @@ const RestaurantSchema = new Schema({
     default: []
   }
 });
+const Restaurant = mongoose.model("Restaurant", RestaurantSchema);
 
-module.exports = mongoose.model("Restaurant", RestaurantSchema);
+RestaurantSchema.pre('remove', { document: true },function (next) {
+  const restaurant_id = this._id;
+  console.log("rest_id",restaurant_id);
+  MenuItem.deleteMany(
+    {restaurant:restaurant_id}).then(
+    res => {
+      console.log("deleted",res)
+    },
+    error => {
+      console.log("FAILED", error)
+    }
+  ),next;
+  // Restaurant.findByIdAndDelete(restaurant_id).then(
+  //   res => {
+  //     console.log("deleted res", res.name)
+  //   },
+  //   error=>{
+  //     console.log("Failed to delete res")
+  //   }
+  // ),next;
+});
+
+module.exports = Restaurant;

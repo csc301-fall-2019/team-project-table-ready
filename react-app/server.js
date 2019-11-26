@@ -127,7 +127,6 @@ app.post("/restaurant/findMenuByRestaurant", (req, res) => {
 app.delete("/restaurant/deleteMenuItem/?:id", (req, res) => {
   // const restaurant_id = req.body.restaurant_id;
   const menu_id = req.params.id;
-  console.log("WAY",menu_id);
   if (menu_id) {
     MenuItem.findByIdAndDelete(menu_id).then(
       users => {
@@ -371,9 +370,11 @@ app.get("/api/restaurants", (req, res) => {
 
 app.delete("/api/users/:id", (req, res) => {
   const id = req.params.id;
-  User.findByIdAndDelete(id)
-    .then(() => {
-      res.send("User " + id + " deleted.");
+  User.findById(id)
+    .then((user) => {
+      user.remove().then(()=>{
+        res.send("User " + id + " deleted.");
+      })
     })
     .catch(err => {
       res.status(400).json("Error: " + err);
@@ -382,9 +383,12 @@ app.delete("/api/users/:id", (req, res) => {
 
 app.delete("/api/restaurants/:id", (req, res) => {
   const id = req.params.id;
-  Restaurant.findByIdAndDelete(id)
-    .then(() => {
-      res.send("Restaurant " + id + " deleted.");
+  Restaurant.findById(id)
+    .then((rest) => {
+      console.log("id",rest.name);
+      rest.remove();
+      res.send("res " + id + " deleted.");
+
     })
     .catch(err => {
       res.status(400).json("Error: " + err);

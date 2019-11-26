@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 // const TypeId = mongoose.Types.ObjectId;
 const Schema = mongoose.Schema;
 // const {MongoClient, ObjectID} = require('mongodb');
+const Restaurant = require("./restaurant.js");
 
 const UserSchema = new Schema({
   accountType: {
@@ -35,5 +36,31 @@ const UserSchema = new Schema({
   email: String,
   tel: String,
 });
+User = mongoose.model("User", UserSchema);
 
-module.exports = mongoose.model("User", UserSchema);
+UserSchema.pre('remove',function (next) {
+  const userID = this._id;
+  console.log("USER DELETE");
+  Restaurant.find(
+    {owner:userID}).then(
+    res => {
+      res.forEach(re => {
+        re.remove()
+        console.log(re.name)
+      })
+    },
+    error => {
+      console.log("FAILED", error)
+    }
+  ),next;
+  // User.findByIdAndDelete(userID).then(
+  //   user => {
+  //     console.log("deleted user", user.username)
+  //   },
+  //   error=>{
+  //     console.log("Failed to delete user")
+  //   }
+  // ),next;
+});
+
+module.exports = User;
