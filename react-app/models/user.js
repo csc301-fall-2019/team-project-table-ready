@@ -36,7 +36,6 @@ const UserSchema = new Schema({
   email: String,
   tel: String,
 });
-User = mongoose.model("User", UserSchema);
 
 UserSchema.pre('remove',function (next) {
   const userID = this._id;
@@ -52,15 +51,9 @@ UserSchema.pre('remove',function (next) {
     error => {
       console.log("FAILED", error)
     }
-  ),next;
-  // User.findByIdAndDelete(userID).then(
-  //   user => {
-  //     console.log("deleted user", user.username)
-  //   },
-  //   error=>{
-  //     console.log("Failed to delete user")
-  //   }
-  // ),next;
+  );
+  next();
+
 });
 
-module.exports = User;
+module.exports = mongoose.model("User", UserSchema);

@@ -1,4 +1,3 @@
-"use strict";
 const log = console.log;
 const mongoose = require("mongoose");
 // const ObjectId = mongoose.Schema.Types.ObjectId;
@@ -57,7 +56,6 @@ const RestaurantSchema = new Schema({
     default: []
   }
 });
-const Restaurant = mongoose.model("Restaurant", RestaurantSchema);
 
 RestaurantSchema.pre('remove', { document: true },function (next) {
   const restaurant_id = this._id;
@@ -70,15 +68,8 @@ RestaurantSchema.pre('remove', { document: true },function (next) {
     error => {
       console.log("FAILED", error)
     }
-  ),next;
-  // Restaurant.findByIdAndDelete(restaurant_id).then(
-  //   res => {
-  //     console.log("deleted res", res.name)
-  //   },
-  //   error=>{
-  //     console.log("Failed to delete res")
-  //   }
-  // ),next;
+  );
+  next();
 });
 
-module.exports = Restaurant;
+module.exports = mongoose.model("Restaurant", RestaurantSchema);

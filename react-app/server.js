@@ -385,7 +385,6 @@ app.delete("/api/restaurants/:id", (req, res) => {
   const id = req.params.id;
   Restaurant.findById(id)
     .then((rest) => {
-      console.log("id",rest.name);
       rest.remove();
       res.send("res " + id + " deleted.");
 
