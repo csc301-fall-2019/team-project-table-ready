@@ -131,7 +131,6 @@ class SignUp extends Component {
                 value={this.state.accountType}
                 onChange={this.handleTypeChange}
               >
-                {/*<option value="SuperAdmin">SuperAdmin</option>*/}
                 <option value="Admin">Admin</option>
                 <option value="Employee">Employee</option>
               </select>
@@ -172,27 +171,6 @@ class SignUp extends Component {
                 onChange = {this.handleTelChange}
               />
             </div>
-            {/*{!this.state.Super ?*/}
-            {/*  (<div>*/}
-            {/*    <div className="input-group mb-3">*/}
-            {/*      <div className="input-group-prepend">*/}
-            {/*            <span*/}
-            {/*              className="input-group-text"*/}
-            {/*              id="inputGroup-sizing-default"*/}
-            {/*            >*/}
-            {/*              Manager*/}
-            {/*            </span>*/}
-            {/*      </div>*/}
-            {/*      <input*/}
-            {/*        name="manager"*/}
-            {/*        type="text"*/}
-            {/*        className="form-control"*/}
-            {/*        aria-label="Sizing example input"*/}
-            {/*        aria-describedby="inputGroup-sizing-default"*/}
-            {/*        onChange = {this.handleManagerChange}*/}
-            {/*      />*/}
-            {/*    </div>*/}
-            {/*  </div>): null}*/}
             <div className="input-group mb-3">
               <div className="input-group-prepend">
                     <span
