@@ -12,35 +12,41 @@ class AddNewMenuItem extends Component {
   state = { redirect: false };
   handleSubmit(event) {
     event.preventDefault();
-
-    const header = {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    };
-
-    axios
-      .post(
-        "/restaurant/newMenuItem",
-        {
-          restaurant: this.props.location.state.id,
-          name: event.target.name.value,
-          price: event.target.price.value,
-          ingredients: event.target.ingredients.value,
-          calories: event.target.calories.value
-        },
-        header
-      )
-      .then(
-        response => {
-          this.setState({ redirect: true });
-          console.log(response);
-        },
-        error => {
-          console.log(error);
+    if(!event.target.name.value) {
+      alert("menu name required")
+    }else if(!event.target.price.value){
+      alert("menu price required")
+    }else{
+      const header = {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
         }
-      );
+      };
+
+      axios
+        .post(
+          "/restaurant/newMenuItem",
+          {
+            restaurant: this.props.location.state.id,
+            name: event.target.name.value,
+            price: event.target.price.value,
+            ingredients: event.target.ingredients.value,
+            calories: event.target.calories.value
+          },
+          header
+        )
+        .then(
+          response => {
+            this.setState({ redirect: true });
+            console.log(response);
+          },
+          error => {
+            console.log(error);
+          }
+        );
+    }
+
   }
   render() {
     const { redirect } = this.state;
