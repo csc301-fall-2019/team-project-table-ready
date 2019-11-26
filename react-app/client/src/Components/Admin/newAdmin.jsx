@@ -16,15 +16,6 @@ import React from "react";
 const log = console.log;
 
 class AddAdmin extends Component {
-    constructor(props) {
-        super(props);
-        // this.deleteUser = this.deleteUser.bind(this);
-        // this.state = {
-        //     users: [],
-        //     query: this.props.query
-        // };
-
-    }
 
     confirm = (e) => {
         e.preventDefault();
@@ -42,23 +33,26 @@ class AddAdmin extends Component {
             };
             console.log(new_user);
 
+            // TODO: Add more alerts
             axios
                 .post('/user/signup', new_user)
                 .then(res => {
                         log(res);
                         log("Successfully added new super admin!");
+                        return res;
                     }
                 )
                 .catch(err => {
                     log(err);
+                    return err;
                 });
         }
     };
 
     render() {
         return (
-            <div>
-                <Col xs="12" sm="4" lg="2">
+            <div className="newAdmin">
+                {/*<Col xs="12" sm="4" lg="2">*/}
                     <Card>
                         <CardHeader>
                             Add a New Super Admin
@@ -67,27 +61,27 @@ class AddAdmin extends Component {
                             <Form action="">
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupAddon addonType="prepend">
-                                            <InputGroupText><i className="fa fa-user"></i></InputGroupText>
-                                        </InputGroupAddon>
+                                        {/*<InputGroupAddon addonType="prepend">*/}
+                                            {/*<InputGroupText><i className="fa fa-user"/></InputGroupText>*/}
+                                        {/*</InputGroupAddon>*/}
                                         <Input type="text" id="newUsername" name="newUsername" placeholder="Username"
                                                autoComplete="name"/>
                                     </InputGroup>
                                 </FormGroup>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupAddon addonType="prepend">
-                                            <InputGroupText><i className="fa fa-envelope"></i></InputGroupText>
-                                        </InputGroupAddon>
+                                        {/*<InputGroupAddon addonType="prepend">*/}
+                                            {/*<InputGroupText><i className="fa fa-envelope"/></InputGroupText>*/}
+                                        {/*</InputGroupAddon>*/}
                                         <Input type="email" id="newEmail" name="newEmail" placeholder="Email"
                                                autoComplete="username"/>
                                     </InputGroup>
                                 </FormGroup>
                                 <FormGroup>
                                     <InputGroup>
-                                        <InputGroupAddon addonType="prepend">
-                                            <InputGroupText><i className="fa fa-asterisk"></i></InputGroupText>
-                                        </InputGroupAddon>
+                                        {/*<InputGroupAddon addonType="prepend">*/}
+                                            {/*<InputGroupText><i className="fa fa-asterisk"/></InputGroupText>*/}
+                                        {/*</InputGroupAddon>*/}
                                         <Input type="password" id="newPwd" name="newPwd" placeholder="Password"
                                                autoComplete="current-password"/>
                                     </InputGroup>
@@ -99,7 +93,7 @@ class AddAdmin extends Component {
                             </Form>
                         </CardBody>
                     </Card>
-                </Col>
+                {/*</Col>*/}
             </div>
         );
     }
