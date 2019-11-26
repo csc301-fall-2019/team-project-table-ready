@@ -1,11 +1,12 @@
 // 'use strict';
 // const log = console.log;
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 // const ObjectId = mongoose.Schema.Types.ObjectId;
 // const TypeId = mongoose.Types.ObjectId;
 const Schema = mongoose.Schema;
 // const {MongoClient, ObjectID} = require('mongodb');
 const Restaurant = require("./restaurant.js");
+const bcrypt = require('bcrypt');
 
 const UserSchema = new Schema({
   accountType: {
@@ -26,15 +27,35 @@ const UserSchema = new Schema({
   workFor: {
     type: String,
     required: false,
-    default: ""
+    default: ''
   },
   image: {
     type: String,
     required: true,
-    default: "/images/avatar_sample.png"
+    default: '/images/avatar_sample.png'
   },
   email: String,
-  tel: String,
+  tel: String
+});
+
+// An example of Mongoose middleware.
+// This function will run immediately prior to saving the document
+// in the database.
+UserSchema.pre('save', function(next) {
+  const user = this; // binds this to User document instance
+
+  // checks to ensure we don't hash password more than once
+  if (user.isModified('password')) {
+    // generate salt and hash the password
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(user.password, salt, (err, hash) => {
+        user.password = hash;
+        next();
+      });
+    });
+  } else {
+    next();
+  }
 });
 
 UserSchema.pre('remove',function (next) {
@@ -57,3 +78,28 @@ UserSchema.pre('remove',function (next) {
 });
 
 module.exports = mongoose.model("User", UserSchema);
+// A static method on the document model.
+// Allows us to find a User document by comparing the hashed password
+//  to a given one, for example when logging in.
+UserSchema.statics.findByUsernamePassword = function(username, password) {
+  const User = this; // binds this to the User model
+
+  // First find the user by their email
+  return User.findOne({ username: username }).then(user => {
+    if (!user) {
+      return Promise.reject(); // a rejected promise
+    }
+    // if the user exists, make sure their password is correct
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(password, user.password, (err, result) => {
+        if (result) {
+          resolve(user);
+        } else {
+          reject('Password incorrect');
+        }
+      });
+    });
+  });
+};
+
+module.exports = mongoose.model('User', UserSchema);

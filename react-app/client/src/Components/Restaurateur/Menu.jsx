@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import MenuItem from "./MenuItem";
-import { Link } from "react-router-dom";
-import EmployeeListItem from "./EmployeeListItem";
-import uid from "uid";
-import axios from "axios";
+import React, { Component } from 'react';
+import MenuItem from './MenuItem';
+import { Link } from 'react-router-dom';
+// import EmployeeListItem from "./EmployeeListItem";
+import uid from 'uid';
+import axios from 'axios';
 
 class Menu extends Component {
   state = { menuItem: [] };
@@ -19,13 +19,13 @@ class Menu extends Component {
   fetchMenu = () => {
     const header = {
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       }
     };
     axios
       .post(
-        "/restaurant/findMenuByRestaurant",
+        '/restaurant/findMenuByRestaurant',
         {
           restaurant_id: this.props.res_id
         },
@@ -33,7 +33,7 @@ class Menu extends Component {
       )
       .then(menuItem =>
         this.setState({ menuItem: menuItem.data }, () =>
-          console.log("Customers fetched...", menuItem)
+          console.log('Customers fetched...', menuItem)
         )
       )
       .catch(err => {
@@ -60,22 +60,22 @@ class Menu extends Component {
           });
       }
     }
-
+    this.setState({ menuItem: menuItem });
   };
 
   render() {
     return (
       <>
-        <h2 style={{ display: "inline" }}>Menu</h2>
+        <h2 style={{ display: 'inline' }}>Menu</h2>
         <Link
           to={{
-            pathname: "/addNewMenuItem",
+            pathname: '/addNewMenuItem',
             state: { id: this.props.res_id }
           }}
         >
           <button className="addNewButton btn btn-outline-success btn-sm">
-            {" "}
-            Add New{" "}
+            {' '}
+            Add New{' '}
           </button>
         </Link>
 
