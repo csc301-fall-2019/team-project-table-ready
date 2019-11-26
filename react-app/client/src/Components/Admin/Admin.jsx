@@ -64,7 +64,7 @@ class Admin extends Component {
             console.log(
                 'redirecting to signin since not authenticated in admin page'
             );
-            return <div></div>;
+            return <Redirect to="/SignIn"/>;
         }
         if (this.is_authenticated()) {
             return (
