@@ -27,18 +27,18 @@ There are three types of end users for our app: restaurant managers, restaurant 
 * Upload image for a view of his restaurant or for a food item on the menu.  
 
 #### Restaurant Employees
-* View the current status of the restaurant this employee works for, including
-  * the current occupancy status for each table;
-  * the current reservations, 
-    * number of reservations
-    * The estimated time of arrival, number of guests, and arrival status for each reservation
+* View the current status of the restaurant this employee works for, including:
+  * the current occupancy status for each table,
+  * the current reservations
+    * number of reservations,
+    * The estimated time of arrival, number of guests, and arrival status for each reservation,
   * the current waitlist status,
-    * number of groups on the waitlist;
+    * number of groups on the waitlist,
     * for each group on the waitlist, ability to view the number of guest, their estimated arrival time, and the date of waitlisting. 
-* Update the restaurant current state.
-	* Employees that are using this software can drag one of the waitlist card to an empty table with enough capacity, indicating one of the group on the waitlist has been served. The status of that group's waitlist card will change from "not served" to "served". 
-	* After the guests are done with their meal, employees can remove the waitlist card and then empty the occupied table when the table is cleaned up. 
-* Add a new group of guests to the waitlist or add a reservation. 
+* Update the restaurant's current status.
+	* Employees that are using this software can drag any of the guest card to an empty table with enough capacity, indicating one of the group on the waitlist/reservation list has been served. The status of that group's waitlist card will change from "not served" to "served". 
+	* After the guests are done with their meal, employees can remove the guest card and empty the occupied table when the table is cleaned up. 
+* Add a new group of guests to the waitlist or add a new reservation. 
 
 ## Instructions
 
