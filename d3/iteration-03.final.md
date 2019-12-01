@@ -1,28 +1,27 @@
-# YOUR PRODUCT/TEAM NAME
+# Table Ready
 
-## Iteration XX
+## Iteration 03
 
- * Start date: 
- * End date: 
+ * Start date: Nov 14th, 2019
+ * End date: Nov 31st, 2019
 
 ### Changes from you `product.md`
 
-List the most significant changes you made to your product (if any). It's normal to change features mid-project or reduce the scope to meet timelines. 
+1. Removed subscription and payment related operations from our application.
+- We left the payment related implementations to d3 as it is not a very important feature and may be very complicated to implement. 
+- After we are done with d2, we discussed with our partner about how she want the payment to be implemented. She said she would not want this feature to be implemented for now as she's worried about the security aspects.
+- Since there won't be any real users for this application for some time, she asked us to allocate the time to the main restaurant managing features.
 
- * Start with the most significant change
- * Identify either a change in features or a reduction of your original scope
- * For each change, explain why you are making it and what you are hoping to achieve from it
+2. Reduced the scope of viewing restaurant table layout. 
+- Initially, our partner mentioned that she would like to see the actual table layout on the restaurant management page if we have time.
+- We did some research and found out this is a very complicated implementation, so we just implemented the "drag and drop" guests to table operation, which is what she envisioned for the most part. 
+- The "drag and drop" is also a quite complicated and important functionality, so we wanted to spend more time on it. 
 
- > *Note:* If you are not making (or haven't made) any changes to your product, it means you successfully scoped, planned and executed the development of your application.This is a very rare occurrence - describe what you believed enabled your team to do so and why. 
+3. Removed customer related analysis 
+- We planned have some customer analysis features for the benefit of restaurant managers, but we learned afterward that the mobile app is still under development and we do not have access to the customer information from our end.
+- We asked our partner and she didn't want to include these features yet, so we allocated our time on other more important functionalities.  
 
 ### Handoff plan
 
-Describe your plan for handing off your product and all technical assets to your partner
-
- * Will you have a handoff meeting? If so, what will be discussed?
- * What assets/artifacts will you be handing off to your partner (e.g. codebase, deployment tools, running application, task tracker, etc.)? 
- * How will you hand off these assets/artifacts?
- * Does your partner have the technical capacity to manage/maintain/develop your product? How will that impact how you handoff the product?
-
-
-> *Note:* This is one of the most important aspects of the project. Please consult with your partner, your TA and the instructors on how to successfully execute this. 
+We will have a handoff meeting with our partner to discuss about the end result of our application and any possible future issues and plans. We will be handing off the codebase, deployment tools, database access and planning documents. These are mostly already owned by our partner as we asked her to register and set up before we start. 
+Our partner told us that she does have a developer team that may be able to help her maintain the product in the future. So we believe providing her access to the codebase, database and etc will be sufficient. 
