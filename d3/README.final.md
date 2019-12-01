@@ -5,9 +5,6 @@
 This is a web portal built for [Table Ready](http://www.tableready.net) that allows restaurant managers to efficiently manage their restaurants’ waitlist, reservations, information, customers, and employees with ease. In addition, our portal will be integrated with the Table Ready's mobile app that customers use to add reservations, waitlist and check out restaurants. We aim to facilitate restaurant managers to efficiently manage their restaurant and maintain communication with their customers.    
 
 ## Key Features
- * Described the key features in the application that the user can access
- * Feel free to provide a breakdown or detail for each feature that is most appropriate for your application
-
 There are three types of end users for our app: restaurant managers, restaurant employees and Table Ready system admins.
 
 #### System Admins
@@ -44,15 +41,11 @@ There are three types of end users for our app: restaurant managers, restaurant 
 * Add a new group of guests to the waitlist or add a reservation. 
 
 ## Instructions
- * Clear instructions for how to use the application from the end-user's perspective
- * How do you access it? Are accounts pre-created or does a user register? Where do you start? etc. 
- * Provide clear steps for using each feature described above
- * If you cannot deploy your application for technical reasons, please let your TA know at the beginning of the iteration. You will need to demo the application to your partner either way.
- 
+
  ### Live App
  https://table-ready.herokuapp.com/
  
- #### Usages
+ ### Usages
  ##### Log in, Log out & Sign up
  - Visit the web app. 
  - Click sign up and register a new user of type 
