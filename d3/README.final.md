@@ -46,7 +46,7 @@ There are three types of end users for our app: restaurant managers, restaurant 
  https://table-ready.herokuapp.com/
  
  ### Usages
- ##### Log in, Log out & Sign up
+ #### Log in, Log out & Sign up
  - Visit the web app. 
  - Click sign up and register a new user of type 
      1) restaurant admin,
@@ -54,8 +54,8 @@ There are three types of end users for our app: restaurant managers, restaurant 
  - Log in on the homepage.
  - At any point after you are logged in, click the "log out" button on the top right corner to log out. 
  
- ##### Navigating as Restaurant Manager User
- - When you are logged in, you first see your personal Page:
+ #### Navigating as Restaurant Manager User
+ - When you are logged in, you first see your personal page:
    - View your information on the left and all the restaurants you own on the right.
    - Update your information by clicking "Setting" and update your profile picture by clicking "Change Avatar".
    - Add a new restaurant by clicking the "Add New" button on the top right corner
@@ -78,7 +78,7 @@ There are three types of end users for our app: restaurant managers, restaurant 
            * You can also edit the name and capacity for each table, the default capacity is 2. These tables will be used in the employee's page for them to update the tables' status when customers arrive.
 
 
-##### Navigating as Restaurant Employee User
+#### Navigating as Restaurant Employee User
 - When you are logged in, if you are not working at any restaurant right now, you will see your personal page. You can change your avatar, update your personal and contact information here. Now you will not be able to see the restaurant status management page. Ask your restaurant manager to send you an invitation.
 - Once you've received an invitation to work at a restaurant, you can choose to reject or accept the invitation.
 - If you confirm to work at a restaurant:
@@ -96,10 +96,10 @@ There are three types of end users for our app: restaurant managers, restaurant 
 
 ##### Navigating as System Admin User
 - After you are logged in, you will see the "Manage" pane, which displays the list of all users and restaurant registered in the system. You can:
-  - search an user/restaurant using the search bar,
+  - search an user/restaurant using the search bar.
   - remove an user/restaurant by clicking on the "Delete" button.
   - go to the user/restaurant page by clicking on their name and perform administrative operations.
-  - add a new superadmin user, which would only be added by you. 
+  - add a new super admin user, which can only be added by you. 
 - "Settings" lets the system admin user to update his/her email, phone number and password. 
 
 ## Development requirements
